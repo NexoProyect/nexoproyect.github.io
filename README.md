@@ -16,7 +16,7 @@ Nexo es un lenguaje de programación diseñado para ser accesible, simple y tota
 ## Únete a la Comunidad
 Forma parte del desarrollo de Nexo, comparte ideas, reporta errores y contribuye al crecimiento de este emocionante proyecto.
 
-[**Únete ahora**](github.com/NexoProject/NexoProject) 🚀
+[**Únete ahora**](https://github.com/NexoProyect/NexoProyect/blob/main/README.md) 🚀
 
 ---
 
