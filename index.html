@@ -3,50 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexo - Lenguaje de Programación</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Nexo - Lenguaje de Programación en Español</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2A5C82;
+            --secondary: #3B8AC4;
+            --light: #F4F7FA;
+            --dark: #1A2C38;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 10px;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background: var(--dark);
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            display: block;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .contact-links a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .contact-links a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Nexo</h1>
-        <p>El lenguaje de programación en español para todos.</p>
-        <nav>
-            <ul>
-                <li><a href="#about">Acerca de</a></li>
-                <li><a href="#features">Características</a></li>
-                <li><a href="#community">Comunidad</a></li>
-                <li><a href="#contact">Contacto</a></li>
-            </ul>
-        </nav>
+        <h1>Proyecto Nexo</h1>
+        <p>Un lenguaje de programación en español para todos</p>
     </header>
 
+    <nav>
+        <div class="nav-container">
+            <span class="logo">Nexo</span>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <div class="nav-links">
+                <a href="#about">¿Qué es?</a>
+                <a href="#why">¿Por qué contribuir?</a>
+                <a href="#how">¿Cómo ayudar?</a>
+                <a href="#objectives">Objetivos</a>
+                <a href="#contact">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
     <main>
-        <section id="about">
-            <h2>Acerca de Nexo</h2>
-            <p>Nexo es un lenguaje de programación diseñado para ser accesible, simple y totalmente en español, ideal para principiantes y expertos.</p>
+        <section id="about" class="card">
+            <h2>¿Qué es Nexo?</h2>
+            <p>Nexo es un lenguaje de programación emergente diseñado para hispanohablantes. Con sintaxis completamente en español, buscamos hacer la programación más accesible y eliminar las barreras idiomáticas.</p>
+            <code>// Ejemplo de código en Nexo
+si x > 5 entonces
+    mostrar("Hola Mundo")
+fin si</code>
         </section>
 
-        <section id="features">
-            <h2>Características Principales</h2>
+        <section id="why" class="card">
+            <h2>¿Por qué contribuir?</h2>
+            <p>Tu apoyo es crucial en esta fase inicial. Juntos podemos crear una herramienta que impulse la programación en español y ayude a miles de personas a aprender desarrollo de software.</p>
+        </section>
+
+        <section id="how">
+            <h2>¿Cómo puedes ayudar?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Desarrollo</h3>
+                    <p>Añade nuevas funcionalidades y mejora el lenguaje</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bug"></i>
+                    <h3>Pruebas</h3>
+                    <p>Reporta errores y ayuda a mejorar la estabilidad</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book"></i>
+                    <h3>Documentación</h3>
+                    <p>Crea tutoriales y mejora la documentación</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Comunidad</h3>
+                    <p>Ayuda a construir y moderar la comunidad</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="objectives" class="card">
+            <h2>Objetivos Principales</h2>
             <ul>
-                <li>Sintaxis clara y sencilla</li>
-                <li>Orientado a la comunidad hispanohablante</li>
-                <li>Código abierto</li>
-                <li>Diseñado para la enseñanza y proyectos reales</li>
+                <li>Sintaxis clara y sencilla en español</li>
+                <li>Accesibilidad para principiantes</li>
+                <li>Comunidad activa y colaborativa</li>
+                <li>Software libre y de código abierto</li>
             </ul>
         </section>
 
-        <section id="community">
-            <h2>Únete a la Comunidad</h2>
-            <p>Forma parte del desarrollo de Nexo, comparte ideas, reporta errores y contribuye al crecimiento de este emocionante proyecto.</p>
-            <button id="joinButton">Únete ahora</button>
+        <section id="contact" class="card">
+            <h2>Contacto</h2>
+            <div class="contact-links">
+                <a href="mailto:sm8contact@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    Correo
+                </a>
+                <a href="https://x.com/Nexo_projectt" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                    Twitter
+                </a>
+                <a href="https://discord.gg/sfbyY3kC" target="_blank">
+                    <i class="fab fa-discord"></i>
+                    Discord
+                </a>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Nexo - Todos los derechos reservados</p>
+        <p>&copy; 2023 Proyecto Nexo - Código abierto bajo licencia MIT</p>
     </footer>
 
-    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Smooth scroll para los enlaces
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Animación al hacer scroll
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.card, .feature-card').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.6s ease-out';
+                observer.observe(element);
+            });
+        });
+    </script>
 </body>
 </html>
