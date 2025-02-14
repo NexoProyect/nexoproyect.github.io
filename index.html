@@ -201,10 +201,43 @@
         <section id="about" class="card">
             <h2>¿Qué es Nexo?</h2>
             <p>Nexo es un lenguaje de programación emergente diseñado para hispanohablantes. Con sintaxis completamente en español, buscamos hacer la programación más accesible y eliminar las barreras idiomáticas.</p>
-            <code>// Ejemplo de código en Nexo
-si x > 5 entonces
-    mostrar("Hola Mundo")
-fin si</code>
+            <code>// Primer programa de mi lenguaje Nexo (.nxo)
+definir funcion sumar(a, b):
+    retornar a + b
+
+definir funcion restar(a, b):
+    retornar a - b
+
+definir funcion multiplicar(a, b):
+    retornar a * b
+
+definir funcion menu():
+    mostrar("Calculadora Básica")
+    mostrar("1. Sumar")
+    mostrar("2. Restar")
+    mostrar("3. Multiplicar")
+    mostrar("4. Salir")
+
+mientras-que-sea Verdadero:
+     funcion menu()
+    opcion = entrada("Elige una opción (1-4): ")
+
+    si opcion == "4":
+        mostrar("¡Hasta luego!")
+        interrumpir
+
+    num1 = decim(entrada("Ingresa el primer número: "))
+    num2 = decim(entrada("Ingresa el segundo número: "))
+
+    si opcion == "1":
+        mostrar(f"Resultado: {sumar(num1, num2)}")
+    sino, si opcion == "2":
+        mostrar(f"Resultado: {restar(num1, num2)}")
+    sino, si opcion == "3":
+        mostrar(f"Resultado: {multiplicar(num1, num2)}")
+    delocontrario:
+        mostrar("Opción no válida. Inténtalo de nuevo.")
+</code>
         </section>
 
         <section id="why" class="card">
