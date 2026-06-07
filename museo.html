@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visita a los Museos Nacionales | Archivo 2096</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#222;line-height:1.75}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:3px solid #1a3a5c;display:flex;align-items:center;gap:8px;padding:10px 20px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+nav .logo{font-weight:700;font-size:1rem;color:#1a3a5c;margin-right:10px;white-space:nowrap}
+nav a{text-decoration:none;padding:6px 12px;border-radius:20px;font-size:.82rem;font-weight:600;transition:.2s}
+nav a.b1{color:#1b5e20;background:#e8f5e9}nav a.b1:hover{background:#1b5e20;color:#fff}
+nav a.b2{color:#1a237e;background:#e8eaf6}nav a.b2:hover{background:#1a237e;color:#fff}
+nav a.bc{color:#4a148c;background:#f3e5f5}nav a.bc:hover{background:#4a148c;color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a3a5c 0%,#1b5e20 50%,#1a237e 100%);color:#fff;text-align:center;padding:60px 20px 50px}
+.hero h1{font-size:2.2rem;letter-spacing:1px;margin-bottom:10px}
+.hero p{font-size:1.1rem;opacity:.9;max-width:700px;margin:0 auto}
+.hero .badges{margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.hero .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);padding:6px 16px;border-radius:20px;font-size:.85rem}
+
+/* BLOCK HEADER */
+.block-header{padding:30px 20px 16px;text-align:center}
+.block-header h2{font-size:1.7rem;font-weight:700;letter-spacing:.5px}
+.block-header p{font-size:.95rem;opacity:.8;margin-top:6px}
+.bh1{background:linear-gradient(90deg,#e8f5e9,#f1f8e9);border-left:6px solid #2e7d32}
+.bh1 h2{color:#1b5e20}
+.bh2{background:linear-gradient(90deg,#e8eaf6,#ede7f6);border-left:6px solid #283593}
+.bh2 h2{color:#1a237e}
+.bh3{background:linear-gradient(90deg,#f3e5f5,#ede7f6);border-left:6px solid #6a1b9a}
+.bh3 h2{color:#4a148c}
+
+/* SECTION CARD */
+.section-card{background:#fff;margin:16px auto;max-width:1100px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden}
+.card-header{padding:14px 22px;display:flex;align-items:center;gap:12px}
+.card-header .num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+.num1{background:#2e7d32}.num2{background:#283593}.num3{background:#6a1b9a}
+.card-header h3{font-size:1.15rem;font-weight:700}
+.h1{border-left:4px solid #2e7d32;color:#1b5e20}
+.h2{border-left:4px solid #283593;color:#1a237e}
+.h3{border-left:4px solid #6a1b9a;color:#4a148c}
+
+.card-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:700px){.card-body{grid-template-columns:1fr}}
+.card-text{padding:20px 24px}
+.card-text p{margin-bottom:12px;font-size:.95rem}
+.trivia{background:#fff8e1;border-left:4px solid #f9a825;padding:10px 14px;border-radius:4px;margin:12px 0;font-size:.88rem}
+.trivia strong{color:#e65100}
+.reflection{background:#f5f5f5;border-left:4px solid #9e9e9e;padding:10px 14px;border-radius:4px;margin:12px 0;font-style:italic;font-size:.88rem;color:#555}
+.card-images{padding:16px;background:#fafafa;border-left:1px solid #eee}
+
+/* IMAGE GRID */
+.img-grid{display:grid;gap:6px}
+.img-grid.g1{grid-template-columns:1fr}
+.img-grid.g2{grid-template-columns:1fr 1fr}
+.img-grid.g3{grid-template-columns:1fr 1fr 1fr}
+.img-grid img{width:100%;height:150px;object-fit:cover;border-radius:6px;cursor:pointer;transition:.2s;border:2px solid transparent}
+.img-grid img:hover{transform:scale(1.03);border-color:#90a4ae}
+.img-grid.g1 img{height:220px}
+
+/* MORE IMAGES TOGGLE */
+.more-imgs{margin-top:6px}
+.more-imgs summary{cursor:pointer;font-size:.8rem;color:#607d8b;padding:4px;user-select:none}
+.more-imgs .img-grid{margin-top:6px}
+
+/* LIGHTBOX */
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;align-items:center;justify-content:center;flex-direction:column}
+#lb.open{display:flex}
+#lb img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:6px;box-shadow:0 0 40px rgba(0,0,0,.5)}
+#lb-close{position:absolute;top:16px;right:22px;color:#fff;font-size:2rem;cursor:pointer;line-height:1}
+#lb-cap{color:#ddd;margin-top:10px;font-size:.85rem;text-align:center}
+
+/* FOOTER */
+footer{text-align:center;padding:30px 20px;background:#1a3a5c;color:#90caf9;font-size:.85rem;margin-top:30px}
+
+/* DIVIDER */
+.divider{height:6px;background:linear-gradient(90deg,#2e7d32,#283593);margin:20px auto;max-width:200px;border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lb">
+  <span id="lb-close" onclick="closeLB()">&#x2715;</span>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-cap"></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav>
+  <span class="logo">🏛️ Museos 2096</span>
+  <a class="b1" href="#bloque1">🌿 Historia Natural</a>
+  <a class="b1" href="#b1s01">Universo</a>
+  <a class="b1" href="#b1s02">Tierra</a>
+  <a class="b1" href="#b1s03">Minerales</a>
+  <a class="b1" href="#b1s05">Ballena</a>
+  <a class="b1" href="#b1s07">T-Rex</a>
+  <a class="b1" href="#b1s15">Antillas</a>
+  <a class="b2" href="#bloque2">📜 Historia y Geografía</a>
+  <a class="b2" href="#b2s06">Mirabal</a>
+  <a class="b2" href="#b2s07">Trujillato</a>
+  <a class="b2" href="#b2s08">1965</a>
+  <a class="bc" href="#comparativas">⚖️ Comparativas</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Visita a los Museos Nacionales</h1>
+  <p>Un recorrido educativo por el Museo Nacional de Historia Natural y el Museo Nacional de Historia y Geografía de la República Dominicana</p>
+  <div class="badges">
+    <span class="badge">🌍 Historia Natural</span>
+    <span class="badge">📖 Historia y Geografía</span>
+    <span class="badge">🦋 30 Salas</span>
+    <span class="badge">🇩🇴 República Dominicana</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ BLOQUE 1 ═══════════════════════════════════ -->
+<div id="bloque1" class="block-header bh1">
+  <h2>🌿 Bloque 1: Museo Nacional de Historia Natural</h2>
+  <p>Biodiversidad, geología, astronomía y los tesoros naturales de la Hispaniola</p>
+</div>
+
+<!-- S01 -->
+<div id="b1s01" class="section-card">
+  <div class="card-header"><span class="num num1">1</span><h3 class="h1">El Universo en Una Sala</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La sala del Sistema Solar es una de las áreas más llamativas del Museo Nacional de Historia Natural. En ella se observan modelos a escala de diferentes planetas y cuerpos celestes suspendidos en un ambiente oscuro que simula el espacio exterior.</p>
+      <p>La iluminación y la distribución de las piezas permiten que los visitantes se sientan como exploradores del cosmos. A través de esta exhibición aprendemos sobre las características de los planetas, sus tamaños, posiciones y diferencias. También comprendemos mejor cómo funciona nuestro sistema solar y el lugar que ocupa la Tierra dentro de él.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> La luz del Sol tarda aproximadamente ocho minutos en llegar a la Tierra.</div>
+      <div class="reflection">💭 Al contemplar la inmensidad del universo, entendemos que nuestro planeta es solo una pequeña parte de algo mucho más grande y extraordinario.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S01_El_Universo_en_Una_Sala/01_Luna_modelo_escala.jpg" alt="Luna modelo a escala" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S01_El_Universo_en_Una_Sala/02_Mercurio_planeta.jpg" alt="Mercurio" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S01_El_Universo_en_Una_Sala/03_Venus_planeta.jpg" alt="Venus" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S01_El_Universo_en_Una_Sala/04_Tierra_planeta.jpg" alt="Tierra" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 1 foto más</summary>
+        <div class="img-grid g1"><img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S01_El_Universo_en_Una_Sala/05_Sala_del_Universo_letrero.jpg" alt="Sala del Universo letrero" onclick="openLB(this)"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S02 -->
+<div id="b1s02" class="section-card">
+  <div class="card-header"><span class="num num1">2</span><h3 class="h1">La Tierra Por Dentro</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Nuestro planeta parece sólido desde la superficie, pero en realidad está formado por varias capas con características diferentes. La exposición muestra la corteza terrestre, el manto, el núcleo externo y el núcleo interno mediante diagramas y modelos que facilitan su comprensión.</p>
+      <p>La corteza es la capa donde vivimos y donde se encuentran continentes y océanos. Debajo de ella está el manto, compuesto por materiales muy calientes. Más profundo se encuentra el núcleo, cuya temperatura puede alcanzar miles de grados Celsius.</p>
+      <p>Gracias a esta exhibición, los visitantes pueden comprender mejor fenómenos naturales como los terremotos, los volcanes y el movimiento de las placas tectónicas.</p>
+      <div class="reflection">💭 Aunque no podemos ver el interior de la Tierra, conocerlo nos ayuda a entender muchos de los procesos que moldean nuestro planeta.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S02_La_Tierra_Por_Dentro/01_Estructura_interna_Tierra_infografico.jpg" alt="Estructura interna de la Tierra" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S02_La_Tierra_Por_Dentro/02_Globo_terraqueo_sala_Antillas.jpg" alt="Globo terráqueo" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S03 -->
+<div id="b1s03" class="section-card">
+  <div class="card-header"><span class="num num1">3</span><h3 class="h1">Piedras que Cuentan Historia</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La colección mineralógica del museo reúne ejemplares provenientes de distintas regiones del mundo. Entre ellos destacan la amatista, la azurita, la malaquita, el cobre nativo y otros minerales que llaman la atención por sus formas y colores.</p>
+      <p>Cada mineral posee propiedades únicas relacionadas con su composición química y el ambiente en el que se formó. Algunos se originan en el interior de volcanes, mientras que otros aparecen después de largos procesos geológicos que pueden durar millones de años.</p>
+      <p>Además de su belleza, los minerales tienen una gran importancia científica e industrial. Muchos son utilizados en la fabricación de aparatos electrónicos, joyas y materiales de construcción.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> La amatista, una de las piedras más conocidas, pertenece a la familia del cuarzo.</div>
+      <div class="reflection">💭 Los minerales son testigos silenciosos de la historia de la Tierra y nos ayudan a descubrir cómo ha evolucionado nuestro planeta a lo largo del tiempo.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/01_Azurita_Malaquita_Caolinita.jpg" alt="Azurita, Malaquita, Caolinita" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/02_Amatista_Brasil.jpg" alt="Amatista Brasil" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/03_Cobre_nativo_Azufre_Plata.jpg" alt="Cobre nativo, Azufre, Plata" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/04_Vitrina_completa_minerales_grupos.jpg" alt="Vitrina minerales" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/05_Raya_y_color_minerales.jpg" alt="Raya y color minerales" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/06_Propiedades_minerales_panel.jpg" alt="Propiedades minerales" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 3 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/07_Propiedades_minerales_panel_2.jpg" alt="Propiedades minerales 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/08_Minerales_vitrina_detalle.jpg" alt="Minerales vitrina detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S03_Piedras_que_Cuentan_Historia/09_Minerales_vitrina_detalle_2.jpg" alt="Minerales vitrina detalle 2" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S04 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">4</span><h3 class="h1">Rocas Ígneas, Sedimentarias y Metamórficas</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Las rocas son el registro físico de la historia de la Tierra. El museo exhibe los tres grandes tipos: rocas ígneas (formadas por enfriamiento de magma), sedimentarias (acumuladas en capas por agua o viento) y metamórficas (transformadas por calor y presión).</p>
+      <p>Cada tipo cuenta una historia diferente sobre las condiciones del pasado geológico. Los paneles explicativos muestran la diferencia entre rocas de grano grueso y grano fino, ayudando a identificarlas.</p>
+      <div class="reflection">💭 Las rocas son las páginas del libro de la historia terrestre; cada capa es un capítulo del pasado.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/01_Rocas_Igneas_panel.jpg" alt="Rocas Ígneas panel" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/02_Rocas_Igneas_grano_grueso_fino.jpg" alt="Rocas ígneas grano" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/03_Rocas_Metamorficas_panel.jpg" alt="Rocas Metamórficas" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/04_Rocas_Sedimentarias_panel.jpg" alt="Rocas Sedimentarias" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/05_Rocas_vitrina_detalle.jpg" alt="Rocas vitrina" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/06_Rocas_vitrina_detalle_2.jpg" alt="Rocas vitrina 2" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S05 BALLENA -->
+<div id="b1s05" class="section-card">
+  <div class="card-header"><span class="num num1">5</span><h3 class="h1">El Esqueleto que Habita el Cielo — Ballena Jorobada</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Al entrar al atrio principal del museo, es imposible no levantar la vista y admirar el enorme esqueleto de una ballena jorobada suspendido sobre los visitantes. Esta impresionante pieza permite apreciar las dimensiones reales de uno de los mamíferos más grandes del planeta.</p>
+      <p>Las ballenas jorobadas visitan cada año las aguas de la República Dominicana para reproducirse y dar a luz a sus crías. Por esta razón, forman parte importante del patrimonio natural del país. Junto al esqueleto también se exhibe un maxilar de cachalote, otro gigante de los océanos.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> Una ballena jorobada adulta puede medir hasta 16 metros de longitud.</div>
+      <div class="reflection">💭 La majestuosidad de estos animales nos recuerda la importancia de proteger los ecosistemas marinos.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/01_Esqueleto_ballena_jorobada_atrio.jpg" alt="Esqueleto ballena jorobada" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/02_Maxilar_cachalote_fiseter.jpg" alt="Maxilar cachalote" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/03_Craneo_ballena_frente.jpg" alt="Cráneo ballena" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/04_Ballena_detalle_costillas.jpg" alt="Ballena costillas" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 3 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/05_Maxilar_inferior_cachalote_juvenil.jpg" alt="Maxilar inferior cachalote" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/06_Ballena_lateral_detalle.jpg" alt="Ballena lateral" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/07_Ballena_detalle_3.jpg" alt="Ballena detalle" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S06 TAMAURY -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">6</span><h3 class="h1">Tamaury: El Manatí que Nos Enseñó</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Tamaury fue un manatí antillano cuya historia se convirtió en una herramienta educativa para miles de visitantes. Su esqueleto se exhibe junto a imágenes y explicaciones sobre la vida de estos mamíferos acuáticos.</p>
+      <p>Los manatíes viven en aguas costeras, ríos y lagunas. Son animales tranquilos que se alimentan principalmente de plantas acuáticas. Sin embargo, enfrentan amenazas como la contaminación, las embarcaciones y la pérdida de hábitat.</p>
+      <p>La exposición busca crear conciencia sobre la necesidad de proteger esta especie, considerada vulnerable en muchas regiones.</p>
+      <div class="reflection">💭 Conocer la historia de Tamaury nos ayuda a comprender que cada ser vivo merece respeto y protección.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S06_Tamaury_El_Manati/01_Tamaury_manati_esqueleto_mural.jpg" alt="Tamaury manatí esqueleto" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S06_Tamaury_El_Manati/02_Delfines_pantalla_informativa.jpg" alt="Delfines pantalla" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S06_Tamaury_El_Manati/03_Mamiferos_marinos_pantalla.jpg" alt="Mamíferos marinos" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S06_Tamaury_El_Manati/04_Mamiferos_marinos_pantalla_2.jpg" alt="Mamíferos marinos 2" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 1 foto más</summary>
+        <div class="img-grid g1"><img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S06_Tamaury_El_Manati/05_Mamiferos_marinos_pantalla_3.jpg" alt="Mamíferos marinos 3" onclick="openLB(this)"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S07 T-REX -->
+<div id="b1s07" class="section-card">
+  <div class="card-header"><span class="num num1">7</span><h3 class="h1">Duffy: El Rey que Rugió Hace 67 Millones de Años</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Entre las piezas más sorprendentes del museo se encuentra el cráneo de un <em>Tyrannosaurus rex</em> conocido como "Duffy". Este fósil perteneció a un ejemplar subadulto que vivió durante el período Cretácico.</p>
+      <p>El T. rex fue uno de los depredadores más poderosos de la historia. Poseía una mordida extremadamente fuerte, dientes afilados y una gran capacidad para dominar su entorno. La exhibición permite a los visitantes acercarse al mundo de los dinosaurios y comprender cómo los fósiles ayudan a reconstruir la historia de la vida en la Tierra.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> Los dientes del T. rex podían alcanzar más de 20 centímetros de longitud.</div>
+      <div class="reflection">💭 Los fósiles son una ventana al pasado y nos muestran cómo ha cambiado la vida a lo largo de millones de años.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/01_Duffy_TRex_craneo_vitrina.jpg" alt="Duffy T-Rex cráneo" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/02_Duffy_TRex_angulo_2.jpg" alt="Duffy ángulo 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/03_Sala_dinosaurios_panorama.jpg" alt="Sala dinosaurios panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/04_Dinosaurios_sala_detalle.jpg" alt="Dinosaurios sala" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 3 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/05_Dinosaurios_sala_detalle_2.jpg" alt="Dinosaurios detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/06_Dinosaurios_sala_detalle_3.jpg" alt="Dinosaurios detalle 3" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/07_Dinosaurios_sala_detalle_4.jpg" alt="Dinosaurios detalle 4" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S08 COLECCIONES -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">8</span><h3 class="h1">Colecciones: Un Tesoro Incalculable</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>El museo alberga miles de ejemplares de peces, reptiles, anfibios, insectos y otros organismos que forman parte de sus colecciones científicas. Estas colecciones son fundamentales para la investigación y la conservación de la biodiversidad.</p>
+      <p>Los científicos utilizan estos ejemplares para estudiar especies, comparar características y conocer mejor los ecosistemas. Además, sirven como registro permanente de la riqueza natural del país. Sin este trabajo de preservación, gran parte del conocimiento sobre la biodiversidad podría perderse con el paso del tiempo.</p>
+      <div class="reflection">💭 Conservar especímenes es también conservar información valiosa para las futuras generaciones.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S08_Colecciones_Tesoro_Incalculable/01_Un_tesoro_incalculable_panel.jpg" alt="Tesoro incalculable panel" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S08_Colecciones_Tesoro_Incalculable/02_Coleccion_peces_reptiles_anfibios_panel.jpg" alt="Colección peces reptiles" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S08_Colecciones_Tesoro_Incalculable/03_Coleccion_insectos_detalle.jpg" alt="Colección insectos" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S08_Colecciones_Tesoro_Incalculable/04_Coleccion_vitrina_detalle.jpg" alt="Colección vitrina" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S09 AVES Y DIORAMAS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">9</span><h3 class="h1">Aves, Dioramas y Ecosistemas</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Los dioramas son recreaciones detalladas de ecosistemas naturales. Uno de ellos muestra un cuervo en un bosque de pinos, rodeado por elementos que reproducen fielmente su hábitat. Estas representaciones permiten observar cómo viven los animales en la naturaleza sin alterar su entorno.</p>
+      <p>La isla de La Hispaniola posee una extraordinaria diversidad de aves. Muchas de estas especies son endémicas, lo que significa que no existen en ninguna otra parte del mundo. La colección también incluye aves exóticas e invasoras.</p>
+      <div class="reflection">💭 Conocer los hábitats naturales nos ayuda a valorar la importancia de conservarlos.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/01_Diorama_cuervo_bosque_pinos.jpg" alt="Diorama cuervo bosque pinos" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/02_Diorama_Bosque_Humedo.jpg" alt="Diorama bosque húmedo" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/03_Aves_exoticas_invasoras_vitrina.jpg" alt="Aves exóticas invasoras" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/04_Aves_coleccion_vitrina_2.jpg" alt="Aves colección" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/05_Aves_coleccion_vitrina_3.jpg" alt="Aves colección 3" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/06_Ecosistema_diorama_detalle.jpg" alt="Ecosistema diorama" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 3 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/07_Ecosistema_diorama_detalle_2.jpg" alt="Ecosistema diorama 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/08_Ecosistema_diorama_detalle_3.jpg" alt="Ecosistema diorama 3" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S09_Aves_y_Dioramas_Ecosistemas/09_Ecosistema_diorama_detalle_4.jpg" alt="Ecosistema diorama 4" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S10 MARIPOSAS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">10</span><h3 class="h1">Las Mariposas que Susurraban Secretos</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La sala de mariposas combina belleza, ciencia e historia. En ella se observan numerosas especies de la Hispaniola, cada una con colores, formas y patrones únicos.</p>
+      <p>Además de su valor biológico, las mariposas tienen un profundo significado histórico en la República Dominicana. Durante la dictadura de Trujillo, algunas mujeres utilizaban el nombre "Mariposa" como símbolo de resistencia y comunicación.</p>
+      <p>Esta conexión entre naturaleza e historia convierte la exposición en una de las más especiales del museo.</p>
+      <div class="reflection">💭 A veces un pequeño insecto puede representar grandes ideas de libertad y esperanza.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/01_Mariposas_Dalman_Hypanartia_panel.jpg" alt="Mariposas panel" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/02_Mariposas_coleccion_vitrina.jpg" alt="Mariposas colección" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/03_Mariposas_coleccion_vitrina_2.jpg" alt="Mariposas vitrina 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/04_Mariposas_detalle_4.jpg" alt="Mariposas detalle" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 1 foto más</summary>
+        <div class="img-grid g1"><img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/05_Mariposas_detalle_5.jpg" alt="Mariposas detalle 5" onclick="openLB(this)"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S11 OZONO -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">11</span><h3 class="h1">La Capa que Nos Protege</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La capa de ozono es una franja de gas ubicada en la estratosfera que actúa como un escudo natural para la Tierra. Su función principal es absorber gran parte de la radiación ultravioleta proveniente del Sol, protegiendo así a los seres vivos.</p>
+      <p>La exposición explica cómo el deterioro de esta capa puede provocar problemas ambientales y de salud, como el aumento de casos de cáncer de piel y daños a los ecosistemas. También muestra los esfuerzos internacionales realizados para reducir las sustancias que la dañan.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> Sin la capa de ozono, la vida en la Tierra sería mucho más difícil debido a la intensa radiación solar.</div>
+      <div class="reflection">💭 Cuidar el planeta significa proteger los sistemas naturales que hacen posible nuestra existencia.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S11_Capa_de_Ozono/01_Capa_ozono_infografico_completo.jpg" alt="Capa de ozono infográfico" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 CAMBIO CLIMATICO -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">12</span><h3 class="h1">Cuando el Planeta Cambia de Temperatura</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La sala de Cambio Climático muestra cómo las actividades humanas han contribuido al aumento de la temperatura global. A través de imágenes, gráficos y datos científicos, se explican fenómenos como las sequías, los incendios forestales y el derretimiento de los glaciares.</p>
+      <p>El Caribe también enfrenta consecuencias importantes, como huracanes más intensos, aumento del nivel del mar y cambios en los ecosistemas marinos. La exposición invita a reflexionar sobre nuestras acciones diarias y cómo cada persona puede contribuir a reducir el impacto ambiental.</p>
+      <div class="reflection">💭 El cambio climático es un desafío global que requiere la participación de todos.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S12_Cambio_Climatico/01_Cambio_climatico_panel_Greta.jpg" alt="Cambio climático panel" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S13 EROSION -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">13</span><h3 class="h1">Cómo el Agua y el Viento Esculpen el Mundo</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Los paisajes que observamos hoy son el resultado de millones de años de cambios naturales. El agua, el viento y otros agentes de erosión modifican constantemente la superficie terrestre.</p>
+      <p>La exposición explica procesos como la meteorización, la erosión y la deposición, responsables de la formación de montañas, valles, cuevas, playas y cañones. También se destaca el impacto de las actividades humanas, como la deforestación y la minería, que pueden acelerar estos procesos.</p>
+      <div class="reflection">💭 La Tierra está en constante transformación y nosotros formamos parte de ese cambio.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S13_Erosion_y_Paisaje/01_Erosion_paisaje_infografico.jpg" alt="Erosión paisaje" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S13_Erosion_y_Paisaje/02_Poblacion_humana_mapa_interactivo.jpg" alt="Población humana mapa" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S14 PEDRO MIR -->
+<div class="section-card">
+  <div class="card-header"><span class="num num1">14</span><h3 class="h1">Pedro Mir y la Naturaleza: Un Poeta en el Museo</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>En la entrada del museo se encuentra un mural dedicado a Pedro Mir, uno de los poetas más importantes de la República Dominicana. Su presencia demuestra que la ciencia y el arte pueden complementarse para ayudarnos a comprender el mundo.</p>
+      <p>Las palabras de Pedro Mir resaltan la belleza de la naturaleza y la importancia de nuestra identidad cultural. Su obra invita a observar el entorno con sensibilidad y admiración. La combinación de literatura y ciencia crea una experiencia educativa más rica y significativa para los visitantes.</p>
+      <div class="reflection">💭 El conocimiento no solo se encuentra en los libros científicos; también vive en el arte y la poesía.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S14_Pedro_Mir_y_la_Naturaleza/01_Pedro_Mir_mural_bienvenida.jpg" alt="Pedro Mir mural" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S15 ORIGEN ANTILLAS -->
+<div id="b1s15" class="section-card">
+  <div class="card-header"><span class="num num1">15</span><h3 class="h1">Origen de las Antillas: 35 Millones de Años de Historia</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La historia de las Antillas comenzó hace millones de años debido a complejos procesos geológicos. Los mapas y modelos del museo muestran cómo se formaron las islas del Caribe y cómo evolucionaron hasta adquirir su aspecto actual.</p>
+      <p>Estos cambios permitieron el desarrollo de ecosistemas únicos y de numerosas especies endémicas. La formación de La Hispaniola es una parte fundamental de esta historia geológica. Comprender el origen de las Antillas ayuda a explicar la biodiversidad y las características naturales que distinguen a nuestra región.</p>
+      <p>La sala también exhibe una impresionante colección de ámbar con insectos preservados, ventanas perfectas al pasado.</p>
+      <div class="reflection">💭 Nuestro territorio es el resultado de una historia natural extraordinaria que comenzó mucho antes de la aparición de los seres humanos.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/01_Origen_Antillas_GAARlandia_mapa.jpg" alt="Origen Antillas GAARlandia" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/07_Placas_tectonicas_mapa.jpg" alt="Placas tectónicas" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/10_Amber_insectos_vitrina.jpg" alt="Ámbar insectos vitrina" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/11_Amber_detalle.jpg" alt="Ámbar detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/04_Sala_geologia_panorama.jpg" alt="Sala geología panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/15_Galeria_natural_panorama.jpg" alt="Galería natural panorama" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 23 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/02_Origen_Antillas_detalle.jpg" alt="Origen Antillas detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/03_Origen_Antillas_detalle_2.jpg" alt="Origen Antillas detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/05_Sala_geologia_detalle.jpg" alt="Sala geología detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/06_Sala_geologia_detalle_2.jpg" alt="Sala geología detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/08_Geologia_detalle.jpg" alt="Geología detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/09_Geologia_detalle_2.jpg" alt="Geología detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/12_Amber_detalle_2.jpg" alt="Ámbar detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/13_Sala_final_panorama.jpg" alt="Sala final panorama" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/14_Sala_final_detalle.jpg" alt="Sala final detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/16_Galeria_natural_detalle.jpg" alt="Galería natural detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/17_Galeria_natural_detalle_2.jpg" alt="Galería natural detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/18_Galeria_natural_detalle_3.jpg" alt="Galería natural detalle 3" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/19_Sala_colecciones_panorama.jpg" alt="Sala colecciones panorama" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/20_Sala_colecciones_detalle.jpg" alt="Sala colecciones detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/21_Sala_colecciones_detalle_2.jpg" alt="Sala colecciones detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/22_Sala_interior_panorama.jpg" alt="Sala interior panorama" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/23_Sala_interior_detalle.jpg" alt="Sala interior detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/24_Sala_interior_detalle_2.jpg" alt="Sala interior detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/25_Sala_marina_panorama.jpg" alt="Sala marina panorama" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/26_Sala_marina_detalle.jpg" alt="Sala marina detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/27_Sala_marina_detalle_2.jpg" alt="Sala marina detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/28_Sala_panorama_final.jpg" alt="Sala panorama final" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/29_Sala_panorama_final_2.jpg" alt="Sala panorama final 2" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ BLOQUE 2 ═══════════════════════════════════ -->
+<div class="divider"></div>
+<div id="bloque2" class="block-header bh2">
+  <h2>📜 Bloque 2: Museo Nacional de Historia y Geografía</h2>
+  <p>Independencia, dictadura, revolución y la memoria viva del pueblo dominicano</p>
+</div>
+
+<!-- B2 S01 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">1</span><h3 class="h2">El Museo que Nació por Decreto</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>El Museo Nacional de Historia y Geografía fue creado con el propósito de conservar y difundir la memoria histórica dominicana. Desde su fundación, se ha dedicado a recopilar objetos, documentos y testimonios que permiten comprender la evolución de la nación.</p>
+      <p>Sus salas muestran diferentes etapas de la historia nacional, desde la época colonial hasta los acontecimientos más recientes.</p>
+      <div class="reflection">💭 Conservar la historia es una forma de preservar la identidad de un pueblo.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S01_El_Museo_Que_Nacio_por_Decreto/01_Presidente_Guzman_panel_fundacional.jpg" alt="Presidente Guzmán panel fundacional" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S02 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">2</span><h3 class="h2">Las Armas de los Padres de la Patria</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Entre las piezas más valiosas del museo se encuentran objetos que pertenecieron a los fundadores de la República Dominicana. Estas reliquias permiten acercarnos a figuras históricas que desempeñaron un papel fundamental en la independencia nacional.</p>
+      <p>Las armas exhibidas representan mucho más que instrumentos de combate; son símbolos de sacrificio, valentía y compromiso con la libertad.</p>
+      <div class="reflection">💭 Los objetos históricos nos conectan directamente con quienes construyeron nuestra nación.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S02_Armas_de_los_Padres_de_la_Patria/01_Pistola_Juan_Pablo_Duarte.jpg" alt="Pistola Juan Pablo Duarte" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S02_Armas_de_los_Padres_de_la_Patria/02_Pistola_Francisco_del_Rosario_Sanchez.jpg" alt="Pistola Francisco del Rosario Sánchez" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S02_Armas_de_los_Padres_de_la_Patria/03_Arsenal_independencia_panel.jpg" alt="Arsenal independencia panel" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S02_Armas_de_los_Padres_de_la_Patria/04_Espadas_guerras_independencia.jpg" alt="Espadas guerras de independencia" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S03 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">3</span><h3 class="h2">La Bandera que Sobrevivió</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La bandera dominicana es uno de los símbolos más importantes de nuestra identidad nacional. En el museo se conserva una bandera histórica que, a pesar del paso del tiempo, sigue representando los ideales de libertad y soberanía del pueblo dominicano.</p>
+      <p>Los colores pueden verse desgastados, pero su valor histórico permanece intacto. Esta pieza permite imaginar los acontecimientos que presenció y las personas que lucharon bajo ella.</p>
+      <div class="reflection">💭 La bandera no es solo una tela; es un símbolo de la historia, la cultura y los valores de nuestro país.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S03_La_Bandera_Que_Sobrevivio/01_Bandera_dominicana_historica.jpg" alt="Bandera dominicana histórica" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S04 ARSENAL -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">4</span><h3 class="h2">Espadas, Fusiles y Batallas: El Arsenal de la Independencia</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Las vitrinas del museo exhiben armas utilizadas en distintos períodos de la historia dominicana. Fusiles, pistolas, espadas y bayonetas muestran cómo se libraron algunas de las luchas más importantes del país.</p>
+      <p>Cada arma cuenta una historia relacionada con la independencia, la Restauración y otros momentos decisivos para la nación. Más allá de su función militar, estas piezas son testimonios materiales del pasado.</p>
+      <div class="reflection">💭 La paz y la independencia que disfrutamos hoy fueron el resultado de grandes esfuerzos y sacrificios.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/01_Fusiles_Remington_y_pistolas_muro.jpg" alt="Fusiles Remington y pistolas" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/02_Armas_coleccion_vitrina.jpg" alt="Armas colección vitrina" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/03_Armas_coleccion_vitrina_2.jpg" alt="Armas vitrina 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/04_Armas_detalle_4.jpg" alt="Armas detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/05_Armas_detalle_5.jpg" alt="Armas detalle 5" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/08_Fusil_Juan_Maria_Lora_1965.jpg" alt="Fusil Juan María Lora 1965" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 6 fotos más</summary>
+        <div class="img-grid g3">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/06_Armas_detalle_6.jpg" alt="Armas detalle 6" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/07_Armas_detalle_7.jpg" alt="Armas detalle 7" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/09_Armas_1965_detalle.jpg" alt="Armas 1965 detalle" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/10_Armas_1965_detalle_2.jpg" alt="Armas 1965 detalle 2" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/11_Armas_1965_detalle_3.jpg" alt="Armas 1965 detalle 3" onclick="openLB(this)">
+          <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S04_Arsenal_de_la_Independencia/12_Armas_1965_detalle_4.jpg" alt="Armas 1965 detalle 4" onclick="openLB(this)">
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S05 LILIS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">5</span><h3 class="h2">Lilís: El Hombre y Su Escritorio</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Ulises Heureaux, conocido como Lilís, fue una de las figuras más influyentes del siglo XIX dominicano. Durante su gobierno ejerció un fuerte control político y dejó una huella importante en la historia nacional.</p>
+      <p>La exposición muestra objetos relacionados con su vida, como documentos, muebles y elementos militares. Estas piezas ayudan a comprender cómo era el ejercicio del poder durante aquella época. El estudio de personajes históricos como Lilís permite analizar tanto sus logros como las controversias de su gobierno.</p>
+      <div class="reflection">💭 Conocer la historia implica comprender sus luces y sus sombras.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S05_Lilis_el_Hombre_y_Su_Escritorio/01_Ulises_Heureaux_retrato_escritorio_1897.jpg" alt="Ulises Heureaux retrato y escritorio" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S06 MIRABAL -->
+<div id="b2s06" class="section-card">
+  <div class="card-header"><span class="num num2">6</span><h3 class="h2">Las Mariposas: Tres Mujeres que Desafiaron al Tirano</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Patria, Minerva y María Teresa Mirabal son símbolos de valentía y resistencia en la República Dominicana. Su lucha contra la dictadura de Trujillo las convirtió en un ejemplo de compromiso con la libertad y la justicia.</p>
+      <p>En el museo se exhiben objetos personales relacionados con las hermanas Mirabal, incluyendo pertenencias que ayudan a acercarnos a su historia humana y familiar. Su legado trascendió las fronteras nacionales y hoy son reconocidas internacionalmente como símbolos de la lucha por los derechos humanos.</p>
+      <div class="reflection">💭 El coraje de las hermanas Mirabal demuestra que una persona puede marcar la diferencia frente a la injusticia.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/01_Hermanas_Mirabal_retrato_clasico.jpg" alt="Hermanas Mirabal retrato" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/02_Zapatos_cartera_Minerva_trebol_muro.jpg" alt="Zapatos y cartera de Minerva" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/03_Sala_Mirabal_panorama.jpg" alt="Sala Mirabal panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/04_Sala_Mirabal_detalle.jpg" alt="Sala Mirabal detalle" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 1 foto más</summary>
+        <div class="img-grid g1"><img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/05_Sala_Mirabal_detalle_2.jpg" alt="Sala Mirabal detalle 2" onclick="openLB(this)"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S07 TRUJILLATO -->
+<div id="b2s07" class="section-card">
+  <div class="card-header"><span class="num num2">7</span><h3 class="h2">Víctimas y Perseguidos: Los Rostros que No Debemos Olvidar</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>El museo dedica un espacio a las víctimas y perseguidos durante la dictadura trujillista. Fotografías y documentos recuerdan a quienes sufrieron persecución por defender sus ideas y derechos.</p>
+      <p>Este mural de memoria histórica busca rendir homenaje a las personas que enfrentaron la represión y pagaron un alto precio por sus convicciones. Recordar estos acontecimientos es esencial para fortalecer los valores democráticos y evitar que hechos similares vuelvan a repetirse.</p>
+      <div class="reflection">💭 La memoria histórica nos ayuda a construir un futuro más justo y consciente.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/01_Mural_victimas_perseguidos_completo.jpg" alt="Mural víctimas perseguidos" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/02_Trujillo_Una_Era_de_Terror_panel.jpg" alt="Trujillo era de terror panel" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/03_Sala_Trujillo_detalle.jpg" alt="Sala Trujillo detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/04_Sala_Trujillo_detalle_2.jpg" alt="Sala Trujillo detalle 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/05_Sala_Trujillo_detalle_3.jpg" alt="Sala Trujillo detalle 3" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S07_Victimas_y_Perseguidos_Trujillato/06_Sala_Trujillo_detalle_4.jpg" alt="Sala Trujillo detalle 4" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S08 1965 -->
+<div id="b2s08" class="section-card">
+  <div class="card-header"><span class="num num2">8</span><h3 class="h2">1965: El Año en Que Santo Domingo Ardió</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La Revolución de Abril de 1965 fue uno de los acontecimientos más importantes de la historia dominicana contemporánea. El museo recrea algunos de estos hechos mediante dioramas, documentos y fotografías.</p>
+      <p>La exposición muestra la lucha de quienes defendían el retorno al orden constitucional y ayuda a comprender el contexto político y social de la época. Gracias a estas representaciones, los visitantes pueden acercarse a un momento decisivo para la democracia dominicana.</p>
+      <div class="reflection">💭 Comprender el pasado nos permite valorar la importancia de la participación ciudadana y la democracia.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/01_Diorama_Caamano_libreria_Fiume.jpg" alt="Diorama Caamaño librería Fiume" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/02_Sala_1965_detalle.jpg" alt="Sala 1965 detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/03_Sala_1965_detalle_2.jpg" alt="Sala 1965 detalle 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/04_Sala_1965_detalle_3.jpg" alt="Sala 1965 detalle 3" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/05_Sala_1965_panorama.jpg" alt="Sala 1965 panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S08_Revolucion_de_Abril_1965/06_Sala_1965_panorama_2.jpg" alt="Sala 1965 panorama 2" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S09 MEDALLAS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">9</span><h3 class="h2">Medallas, Insignias y el Honor de Servir</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Las condecoraciones militares representan actos de servicio, disciplina y dedicación. El museo conserva medallas e insignias que muestran la evolución de las instituciones militares dominicanas.</p>
+      <p>Cada pieza tiene un significado especial y refleja momentos importantes de la historia nacional. Además, ayudan a comprender la organización y estructura de las fuerzas armadas. Estas colecciones forman parte del patrimonio histórico del país.</p>
+      <div class="reflection">💭 Los símbolos de reconocimiento representan el esfuerzo y compromiso de quienes sirvieron a la nación.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/01_Condecoraciones_medallas_insignias_Armada.jpg" alt="Condecoraciones medallas" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/02_Sala_militar_detalle.jpg" alt="Sala militar detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/03_Sala_militar_detalle_2.jpg" alt="Sala militar detalle 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/04_Sala_militar_detalle_3.jpg" alt="Sala militar detalle 3" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/05_Sala_militar_detalle_4.jpg" alt="Sala militar detalle 4" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S09_Medallas_e_Insignias_Militares/06_Sala_militar_detalle_5.jpg" alt="Sala militar detalle 5" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S10 MEDALLONES CPEP -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">10</span><h3 class="h2">Monedas de la Memoria: La CPEP y Sus Medallones</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Las monedas y medallones conmemorativos son pequeñas piezas que conservan grandes historias. A través de ellas se recuerdan aniversarios, acontecimientos históricos y figuras importantes de la nación.</p>
+      <p>La exposición muestra cómo estos objetos funcionan como documentos históricos que transmiten información de generación en generación. Aunque son pequeños, contienen un enorme valor cultural y educativo.</p>
+      <div class="reflection">💭 A veces, los objetos más pequeños son capaces de guardar los recuerdos más grandes.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S10_Medallones_CPEP_Efemerides/01_CPEP_medallones_conmemorativos.jpg" alt="CPEP medallones" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S10_Medallones_CPEP_Efemerides/02_Retrato_Francisco_Gregorio_Billini.jpg" alt="Francisco Gregorio Billini" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S10_Medallones_CPEP_Efemerides/03_Galeria_presidentes_detalle.jpg" alt="Galería presidentes" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S10_Medallones_CPEP_Efemerides/04_Galeria_presidentes_detalle_2.jpg" alt="Galería presidentes 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S10_Medallones_CPEP_Efemerides/05_Galeria_presidentes_detalle_3.jpg" alt="Galería presidentes 3" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S11 RESTAURACION -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">11</span><h3 class="h2">La Guerra de la Restauración en la Pared</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La Guerra de la Restauración (1863-1865) fue el conflicto que permitió recuperar la soberanía dominicana después de la anexión a España. En el museo se conservan armas, retratos y objetos relacionados con los protagonistas de esta lucha.</p>
+      <p>La exposición muestra cómo hombres y mujeres defendieron la independencia nacional a pesar de las dificultades. Cada objeto expuesto ayuda a reconstruir los acontecimientos de esta etapa histórica.</p>
+      <div class="reflection">💭 La independencia no solo se conquista, también debe defenderse y preservarse.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/01_Sala_Restauracion_espadas_figuras.jpg" alt="Sala Restauración espadas figuras" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/02_Sala_Restauracion_detalle.jpg" alt="Sala Restauración detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/03_Sala_Restauracion_detalle_2.jpg" alt="Sala Restauración detalle 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/04_Sala_Restauracion_detalle_3.jpg" alt="Sala Restauración detalle 3" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/05_Farol_Memphis_ocupacion_EEUU.jpg" alt="Farol Memphis ocupación EEUU" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/06_Sala_Ocupacion_detalle.jpg" alt="Sala Ocupación detalle" onclick="openLB(this)">
+      </div>
+      <details class="more-imgs"><summary>+ 1 foto más</summary>
+        <div class="img-grid g1"><img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/07_Sala_Ocupacion_mapas_Hispaniola.jpg" alt="Sala Ocupación mapas Hispaniola" onclick="openLB(this)"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S12 SALAS TEMATICAS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">12</span><h3 class="h2">Un Museo Dentro del Museo: Las Salas Temáticas</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>El diseño de un museo es tan importante como las piezas que exhibe. Las salas están organizadas de manera que el visitante pueda recorrer distintos períodos históricos de forma clara y ordenada.</p>
+      <p>Los colores, las vitrinas, los dioramas y los paneles informativos ayudan a crear una experiencia educativa más dinámica. Cada detalle está pensado para facilitar el aprendizaje. Gracias a esta organización, los visitantes pueden viajar por siglos de historia en un solo recorrido.</p>
+      <div class="reflection">💭 Un museo no solo conserva objetos; también cuenta historias a través de sus espacios.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/01_Sala_panorama_paneles_colecciones.jpg" alt="Sala panorama paneles" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/02_Sala_panorama_2.jpg" alt="Sala panorama 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/03_Sala_geografia_panorama.jpg" alt="Sala geografía panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/04_Sala_geografia_detalle.jpg" alt="Sala geografía detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/05_Salon_interior_panorama.jpg" alt="Salón interior panorama" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S12_Salas_Tematicas_Arquitectura/06_Salon_interior_detalle.jpg" alt="Salón interior detalle" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S13 OBJETOS -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">13</span><h3 class="h2">Los Objetos que Cuentan Más que las Palabras</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Los libros y documentos son importantes para aprender historia, pero observar un objeto auténtico produce una experiencia diferente. Ver la pistola de un prócer o un objeto personal de las hermanas Mirabal permite sentir una conexión más cercana con el pasado.</p>
+      <p>Estos elementos constituyen lo que se conoce como patrimonio material. Son testimonios reales que ayudan a comprender mejor los acontecimientos históricos. Por esta razón, los museos desempeñan una función esencial en la preservación de la memoria colectiva.</p>
+      <div class="reflection">💭 Los objetos históricos nos permiten tocar, aunque sea simbólicamente, fragmentos del pasado.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g3">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S13_Objetos_que_Hablan/01_Vitrina_objetos_historicos.jpg" alt="Vitrina objetos históricos" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S13_Objetos_que_Hablan/02_Objetos_historicos_detalle.jpg" alt="Objetos históricos detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S13_Objetos_que_Hablan/03_Objetos_coloniales_detalle.jpg" alt="Objetos coloniales detalle" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S13_Objetos_que_Hablan/04_Objetos_coloniales_detalle_2.jpg" alt="Objetos coloniales detalle 2" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S13_Objetos_que_Hablan/05_Objetos_vitrina_panorama.jpg" alt="Objetos vitrina panorama" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S14 TRUJILLO ERA TERROR -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">14</span><h3 class="h2">Trujillo: El Hombre que Convirtió el País en Su Apellido</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La Era de Trujillo fue uno de los períodos más influyentes y controvertidos de la historia dominicana. Rafael Leónidas Trujillo gobernó el país entre 1930 y 1961 mediante un régimen dictatorial que concentró gran parte del poder político, económico y militar en su persona.</p>
+      <p>Su gobierno impulsó importantes obras de infraestructura y el fortalecimiento de algunas instituciones del Estado. Sin embargo, estos avances ocurrieron en un contexto donde las libertades políticas eran muy limitadas. La dictadura se caracterizó por la censura, la persecución de opositores y las violaciones de los derechos humanos.</p>
+      <p>El museo presenta este período no solo a través de la figura de Trujillo, sino también mediante las historias de quienes enfrentaron la dictadura. La muerte de Trujillo en 1961 marcó el inicio de una nueva etapa para la República Dominicana.</p>
+      <div class="trivia"><strong>¿Sabías que...?</strong> Durante la dictadura, la ciudad de Santo Domingo fue renombrada oficialmente como "Ciudad Trujillo".</div>
+      <div class="reflection">💭 Estudiar este período nos ayuda a comprender la importancia de la democracia, la libertad de expresión y el respeto a los derechos humanos para el desarrollo de una sociedad justa.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S14_Trujillo_Era_de_Terror/01_Victimas_mural_trujillato.jpg" alt="Víctimas mural trujillato" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S14_Trujillo_Era_de_Terror/02_Trujillo_Era_Terror_mural.jpg" alt="Trujillo era de terror mural" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S14_Trujillo_Era_de_Terror/03_Zapatos_Minerva_simbolo_represion.jpg" alt="Zapatos Minerva símbolo represión" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B2 S15 VISITAR ES RECORDAR -->
+<div class="section-card">
+  <div class="card-header"><span class="num num2">15</span><h3 class="h2">Visitar es Recordar: Reflexión Final</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La visita al Museo Nacional de Historia y Geografía permite comprender mejor el camino recorrido por la República Dominicana desde sus orígenes hasta la actualidad. Cada sala, objeto y documento contribuye a preservar la memoria de quienes lucharon por la libertad, la justicia y la construcción de la nación.</p>
+      <p>El museo se convierte así en un puente entre el pasado y el presente. Visitar este espacio es una oportunidad para aprender, reflexionar y fortalecer nuestra identidad nacional.</p>
+      <div class="reflection">💭 Recordar nuestra historia es una forma de valorar el presente y construir un mejor futuro.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g1">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S15_Visitar_es_Recordar/01_Panel_fundacional_Antonio_Guzman.jpg" alt="Panel fundacional Antonio Guzmán" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S15_Visitar_es_Recordar/02_Sala_final_museo_panorama.jpg" alt="Sala final museo panorama" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ COMPARATIVAS ═══════════════════════════════════ -->
+<div class="divider"></div>
+<div id="comparativas" class="block-header bh3">
+  <h2>⚖️ Secciones Comparativas</h2>
+  <p>Puntos de encuentro entre la historia natural y la historia humana</p>
+</div>
+
+<!-- C1 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num3">C1</span><h3 class="h3">Dos Tipos de Memoria</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Aunque ambos museos son muy diferentes, comparten una misión importante: preservar la memoria. El Museo Nacional de Historia Natural conserva restos de animales, minerales y evidencias de la evolución de la Tierra, mientras que el Museo Nacional de Historia y Geografía protege objetos relacionados con la historia dominicana.</p>
+      <p>Uno guarda la memoria de la naturaleza y el otro la memoria de las personas. Ambos permiten comprender cómo llegamos a ser lo que somos hoy.</p>
+      <div class="reflection">💭 Conocer tanto la naturaleza como la historia nos ayuda a entender mejor nuestro mundo.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S07_Duffy_TRex/01_Duffy_TRex_craneo_vitrina.jpg" alt="Historia Natural — Duffy T-Rex" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/01_Hermanas_Mirabal_retrato_clasico.jpg" alt="Historia y Geografía — Mirabal" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- C2 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num3">C2</span><h3 class="h3">La Mariposa: De la Vitrina Científica al Símbolo de Resistencia</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Las mariposas representan uno de los vínculos más interesantes entre ambos museos. En el Museo de Historia Natural son estudiadas como parte de la biodiversidad de la Hispaniola. En el Museo de Historia y Geografía, las "Mariposas" representan la valentía de las hermanas Mirabal y de quienes lucharon contra la dictadura.</p>
+      <p>Así, un mismo símbolo adquiere significados distintos: uno relacionado con la ciencia y otro con la libertad.</p>
+      <div class="reflection">💭 Una simple mariposa puede unir la historia natural y la historia humana.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S10_Mariposas_Hispaniola/02_Mariposas_coleccion_vitrina.jpg" alt="Mariposas colección científica" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S06_Las_Mariposas_Hermanas_Mirabal/02_Zapatos_cartera_Minerva_trebol_muro.jpg" alt="Símbolo de resistencia Mirabal" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- C3 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num3">C3</span><h3 class="h3">Cuánto Tiempo Cabe en Una Sala</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Los dos museos trabajan con escalas de tiempo muy diferentes. El Museo de Historia Natural nos habla de millones de años de evolución, formación de montañas y aparición de especies. Por otro lado, el Museo de Historia y Geografía se centra en acontecimientos ocurridos durante los últimos siglos, relacionados con la construcción de la nación dominicana.</p>
+      <p>Ambas perspectivas son importantes para comprender el pasado desde distintos puntos de vista.</p>
+      <div class="reflection">💭 La historia puede medirse en siglos o en millones de años, pero siempre nos ayuda a comprender el presente.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S15_Origen_de_las_Antillas/01_Origen_Antillas_GAARlandia_mapa.jpg" alt="35 millones de años — Antillas" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/01_Sala_Restauracion_espadas_figuras.jpg" alt="Historia reciente — Restauración" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- C4 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num3">C4</span><h3 class="h3">Lo que Ambos Museos Nos Dicen Sobre la Hispaniola</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>La isla de La Hispaniola puede estudiarse desde diferentes perspectivas. El Museo de Historia Natural muestra su origen geológico, su biodiversidad y sus ecosistemas únicos. El Museo de Historia y Geografía presenta los acontecimientos políticos, sociales y culturales que ocurrieron en este territorio.</p>
+      <p>Juntos ofrecen una visión más completa de la isla, combinando naturaleza e historia.</p>
+      <div class="reflection">💭 Para conocer verdaderamente nuestro país debemos entender tanto su entorno natural como su pasado histórico.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S02_La_Tierra_Por_Dentro/02_Globo_terraqueo_sala_Antillas.jpg" alt="Hispaniola — Historia Natural" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S11_Guerra_de_la_Restauracion/07_Sala_Ocupacion_mapas_Hispaniola.jpg" alt="Hispaniola — Historia" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- C5 -->
+<div class="section-card">
+  <div class="card-header"><span class="num num3">C5</span><h3 class="h3">¿Qué Queda de Una Visita?</h3></div>
+  <div class="card-body">
+    <div class="card-text">
+      <p>Después de recorrer ambos museos, cada visitante se lleva nuevos conocimientos y experiencias. Algunas personas recuerdan la enorme ballena jorobada; otras, los objetos de los héroes nacionales o la historia de las hermanas Mirabal.</p>
+      <p>La visita demuestra que aprender puede ser una experiencia emocionante cuando observamos directamente las evidencias del pasado y de la naturaleza. Ambos museos invitan a seguir investigando, haciendo preguntas y valorando el patrimonio nacional.</p>
+      <div class="reflection">💭 Conocer nuestra historia y nuestra naturaleza nos ayuda a sentirnos más conectados con la República Dominicana y a comprender mejor nuestro papel en el mundo.</div>
+    </div>
+    <div class="card-images">
+      <div class="img-grid g2">
+        <img src="archivo2096/BLOQUE_1_Museo_Historia_Natural/B1_S05_Esqueleto_Ballena_y_Cachalote/01_Esqueleto_ballena_jorobada_atrio.jpg" alt="Ballena jorobada" onclick="openLB(this)">
+        <img src="archivo2096/BLOQUE_2_Museo_Historia_y_Geografia/B2_S03_La_Bandera_Que_Sobrevivio/01_Bandera_dominicana_historica.jpg" alt="Bandera dominicana histórica" onclick="openLB(this)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>🏛️ Archivo 2096 — Visita a los Museos Nacionales de la República Dominicana</p>
+  <p style="margin-top:6px;opacity:.7">Museo Nacional de Historia Natural &nbsp;·&nbsp; Museo Nacional de Historia y Geografía</p>
+</footer>
+
+<script>
+function openLB(img){
+  document.getElementById('lb-img').src=img.src;
+  document.getElementById('lb-cap').textContent=img.alt;
+  document.getElementById('lb').classList.add('open');
+}
+function closeLB(){document.getElementById('lb').classList.remove('open')}
+document.getElementById('lb').addEventListener('click',function(e){if(e.target===this)closeLB()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB()});
+</script>
+</body>
+</html>
