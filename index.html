@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tour Virtual — Museos Nacionales de la República Dominicana</title>
+<style>
+  :root {
+    --bg: #0d0d10;
+    --sidebar-bg: #111116;
+    --sidebar-border: #222230;
+    --text: #e4dfd4;
+    --text-muted: #8a8578;
+    --m1-accent: #c8853a;
+    --m1-light: #e8a857;
+    --m1-dark: #1e140a;
+    --m2-accent: #4a7fc1;
+    --m2-light: #6fa0e0;
+    --m2-dark: #0a1220;
+    --comp-accent: #7a5fc1;
+    --card-bg: #18181f;
+    --tag-bg: #252530;
+    --sidebar-w: 290px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #sidebar-header {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--sidebar-border);
+  }
+
+  #sidebar-header .logo-line {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  #sidebar-header h1 {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  #sidebar-nav {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px 0 24px;
+  }
+
+  #sidebar-nav::-webkit-scrollbar { width: 4px; }
+  #sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  #sidebar-nav::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 2px; }
+
+  .museum-group { margin-bottom: 4px; }
+
+  .museum-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background 0.15s;
+  }
+  .museum-toggle:hover { background: rgba(255,255,255,0.03); }
+
+  .museum-toggle .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .m1 .dot { background: var(--m1-accent); }
+  .m2 .dot { background: var(--m2-accent); }
+  .mc .dot { background: var(--comp-accent); }
+
+  .museum-toggle .arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+  .museum-toggle.open .arrow { transform: rotate(90deg); }
+
+  .museum-toggle.m1 { color: var(--m1-light); }
+  .museum-toggle.m2 { color: var(--m2-light); }
+  .museum-toggle.mc { color: #a88fe0; }
+
+  .section-list {
+    display: none;
+    flex-direction: column;
+  }
+  .section-list.open { display: flex; }
+
+  .nav-item {
+    padding: 7px 18px 7px 34px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    line-height: 1.35;
+    border-left: 2px solid transparent;
+    margin-left: 1px;
+  }
+  .nav-item:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.035);
+  }
+  .nav-item.active {
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+  }
+  .nav-item.active.m1-item { border-left-color: var(--m1-accent); color: var(--m1-light); }
+  .nav-item.active.m2-item { border-left-color: var(--m2-accent); color: var(--m2-light); }
+  .nav-item.active.mc-item { border-left-color: var(--comp-accent); color: #a88fe0; }
+
+  .nav-item .num {
+    display: inline-block;
+    width: 18px;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-right: 4px;
+    opacity: 0.6;
+  }
+
+  /* ── MAIN CONTENT ────────────────────────────────────── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-track { background: var(--bg); }
+  #main::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 3px; }
+
+  /* Hero / intro */
+  #intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #intro::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(200,133,58,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse at 70% 30%, rgba(74,127,193,0.06) 0%, transparent 60%);
+  }
+
+  #intro .eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  #intro h2 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: normal;
+    line-height: 1.25;
+    max-width: 700px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  #intro h2 em {
+    font-style: italic;
+    background: linear-gradient(90deg, var(--m1-accent), var(--m2-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  #intro p {
+    max-width: 540px;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .museum-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+
+  .museum-card {
+    padding: 20px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 200px;
+    text-align: left;
+  }
+  .museum-card:hover { transform: translateY(-3px); }
+
+  .museum-card.c1 {
+    background: var(--m1-dark);
+    border: 1px solid rgba(200,133,58,0.3);
+    box-shadow: 0 4px 20px rgba(200,133,58,0.1);
+  }
+  .museum-card.c2 {
+    background: var(--m2-dark);
+    border: 1px solid rgba(74,127,193,0.3);
+    box-shadow: 0 4px 20px rgba(74,127,193,0.1);
+  }
+  .museum-card:hover.c1 { box-shadow: 0 8px 30px rgba(200,133,58,0.2); }
+  .museum-card:hover.c2 { box-shadow: 0 8px 30px rgba(74,127,193,0.2); }
+
+  .museum-card .card-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .c1 .card-tag { color: var(--m1-accent); }
+  .c2 .card-tag { color: var(--m2-accent); }
+
+  .museum-card h3 {
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .museum-card .card-count {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── SECTION BLOCKS ──────────────────────────────────── */
+  .section-anchor { display: block; }
+
+  .museum-header {
+    padding: 60px 48px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+  }
+  .museum-header.mh1 {
+    background: linear-gradient(to bottom, rgba(30,20,10,0.97) 80%, transparent);
+    border-bottom: 1px solid rgba(200,133,58,0.15);
+  }
+  .museum-header.mh2 {
+    background: linear-gradient(to bottom, rgba(10,18,32,0.97) 80%, transparent);
+    border-bottom: 1px solid rgba(74,127,193,0.15);
+  }
+  .museum-header.mhc {
+    background: linear-gradient(to bottom, rgba(15,10,25,0.97) 80%, transparent);
+    border-bottom: 1px solid rgba(122,95,193,0.15);
+  }
+
+  .museum-header .mh-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .mh1 .mh-tag { color: var(--m1-accent); }
+  .mh2 .mh-tag { color: var(--m2-accent); }
+  .mhc .mh-tag { color: var(--comp-accent); }
+
+  .museum-header h2 {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: normal;
+  }
+
+  .section-block {
+    padding: 48px 48px 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .section-block:last-of-type { border-bottom: none; }
+
+  .section-num {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .section-block h3 {
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: normal;
+    line-height: 1.25;
+    margin-bottom: 24px;
+  }
+
+  .m1-section h3 { color: var(--m1-light); }
+  .m2-section h3 { color: var(--m2-light); }
+  .mc-section h3 { color: #a88fe0; }
+
+  .section-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .section-body { grid-template-columns: 1fr; }
+  }
+
+  .section-text p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #c8c2b6;
+    margin-bottom: 16px;
+  }
+
+  .fact-box {
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .fact-box.sabia {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #666;
+  }
+  .m1-section .fact-box.sabia { border-left-color: var(--m1-accent); background: rgba(200,133,58,0.07); }
+  .m2-section .fact-box.sabia { border-left-color: var(--m2-accent); background: rgba(74,127,193,0.07); }
+  .mc-section .fact-box.sabia { border-left-color: var(--comp-accent); background: rgba(122,95,193,0.07); }
+
+  .fact-box .fb-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+  .m1-section .fact-box .fb-label { color: var(--m1-accent); }
+  .m2-section .fact-box .fb-label { color: var(--m2-accent); }
+  .mc-section .fact-box .fb-label { color: var(--comp-accent); }
+
+  .fact-box.reflexion {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .fact-box.reflexion::before {
+    content: '"';
+    display: block;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 4px;
+    opacity: 0.3;
+    font-family: Georgia, serif;
+  }
+
+  /* ── GALLERY ─────────────────────────────────────────── */
+  .gallery {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .gallery-img {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 4/3;
+    background: var(--card-bg);
+    cursor: zoom-in;
+  }
+
+  .gallery-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s, filter 0.3s;
+    filter: brightness(0.9);
+  }
+  .gallery-img:hover img {
+    transform: scale(1.05);
+    filter: brightness(1);
+  }
+
+  .gallery-img .img-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+  }
+  .gallery-img:hover .img-overlay { opacity: 1; }
+
+  /* only 1 image: show full width */
+  .gallery.single { grid-template-columns: 1fr; max-width: 400px; }
+  .gallery.single .gallery-img { aspect-ratio: 4/3; }
+
+  /* ── LIGHTBOX ────────────────────────────────────────── */
+  #lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #lightbox.show { display: flex; }
+
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+
+  #lightbox-close {
+    position: fixed;
+    top: 20px; right: 24px;
+    font-size: 28px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.2s;
+    z-index: 1001;
+    user-select: none;
+  }
+  #lightbox-close:hover { color: white; }
+
+  #lightbox-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .lb-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+  .lb-btn:hover { background: rgba(255,255,255,0.2); }
+
+  #lb-counter {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* ── SCROLL TO TOP ───────────────────────────────────── */
+  #scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 40px; height: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--sidebar-border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 18px;
+    color: var(--text-muted);
+    z-index: 100;
+  }
+  #scroll-top.visible { opacity: 1; }
+  #scroll-top:hover { color: var(--text); }
+
+  /* ── PROGRESS BAR ────────────────────────────────────── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--m1-accent), var(--m2-accent));
+    z-index: 200;
+    transition: width 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="logo-line">República Dominicana · 2025</div>
+    <h1>Tour Virtual<br>Museos Nacionales</h1>
+  </div>
+  <div id="sidebar-nav">
+    <!-- M1 group -->
+    <div class="museum-group">
+      <div class="museum-toggle m1 open" onclick="toggleGroup(this)">
+        <span class="dot"></span>
+        Historia Natural
+        <span class="arrow">▶</span>
+      </div>
+      <div class="section-list open" id="list-m1"></div>
+    </div>
+    <!-- M2 group -->
+    <div class="museum-group">
+      <div class="museum-toggle m2 open" onclick="toggleGroup(this)">
+        <span class="dot"></span>
+        Historia y Geografía
+        <span class="arrow">▶</span>
+      </div>
+      <div class="section-list open" id="list-m2"></div>
+    </div>
+    <!-- Comparative -->
+    <div class="museum-group">
+      <div class="museum-toggle mc open" onclick="toggleGroup(this)">
+        <span class="dot"></span>
+        Secciones Comparativas
+        <span class="arrow">▶</span>
+      </div>
+      <div class="section-list open" id="list-mc"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<main id="main">
+  <div id="progress"></div>
+
+  <!-- Intro -->
+  <section id="intro">
+    <div class="eyebrow">Visita educativa · Junio 2025</div>
+    <h2>Dos museos.<br><em>Una historia extraordinaria.</em></h2>
+    <p>Recorre las salas del Museo Nacional de Historia Natural y del Museo Nacional de Historia y Geografía de la República Dominicana a través de este tour virtual.</p>
+    <div class="museum-cards">
+      <div class="museum-card c1" onclick="scrollToSection('m1-intro')">
+        <div class="card-tag">Bloque 1</div>
+        <h3>Museo Nacional de<br>Historia Natural</h3>
+        <div class="card-count">15 salas · Naturaleza y Ciencia</div>
+      </div>
+      <div class="museum-card c2" onclick="scrollToSection('m2-intro')">
+        <div class="card-tag">Bloque 2</div>
+        <h3>Museo Nacional de<br>Historia y Geografía</h3>
+        <div class="card-count">15 salas · Historia Dominicana</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Museum 1 header -->
+  <span class="section-anchor" id="m1-intro"></span>
+  <div class="museum-header mh1">
+    <div class="mh-tag">Bloque 1</div>
+    <h2>Museo Nacional de Historia Natural</h2>
+  </div>
+  <div id="content-m1"></div>
+
+  <!-- Museum 2 header -->
+  <span class="section-anchor" id="m2-intro"></span>
+  <div class="museum-header mh2">
+    <div class="mh-tag">Bloque 2</div>
+    <h2>Museo Nacional de Historia y Geografía</h2>
+  </div>
+  <div id="content-m2"></div>
+
+  <!-- Comparative header -->
+  <span class="section-anchor" id="mc-intro"></span>
+  <div class="museum-header mhc">
+    <div class="mh-tag">Secciones Comparativas</div>
+    <h2>Los Dos Museos: Conexiones y Reflexiones</h2>
+  </div>
+  <div id="content-mc"></div>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <span id="lightbox-close" onclick="closeLightbox()">✕</span>
+  <img id="lb-img" src="" alt="">
+  <div id="lightbox-nav">
+    <button class="lb-btn" onclick="lbPrev(event)">← Anterior</button>
+    <span id="lb-counter"></span>
+    <button class="lb-btn" onclick="lbNext(event)">Siguiente →</button>
+  </div>
+</div>
+
+<div id="scroll-top" onclick="document.getElementById('main').scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+const BASE = './archivo2096/';
+const B1 = BASE + 'BLOQUE_1_Museo_Historia_Natural/';
+const B2 = BASE + 'BLOQUE_2_Museo_Historia_y_Geografia/';
+
+const m1Sections = [
+  {
+    id: 's1-1', num: '1',
+    title: 'El Universo en Una Sala',
+    folder: B1 + 'B1_S01_El_Universo_en_Una_Sala/',
+    images: ['01_Luna_modelo_escala.jpg','02_Mercurio_planeta.jpg','03_Venus_planeta.jpg','04_Tierra_planeta.jpg','05_Sala_del_Universo_letrero.jpg'],
+    text: 'La sala del Sistema Solar es una de las áreas más llamativas del Museo Nacional de Historia Natural. En ella se observan modelos a escala de diferentes planetas y cuerpos celestes suspendidos en un ambiente oscuro que simula el espacio exterior. La iluminación y la distribución de las piezas permiten que los visitantes se sientan como exploradores del cosmos.\n\nA través de esta exhibición aprendemos sobre las características de los planetas, sus tamaños, posiciones y diferencias. También comprendemos mejor cómo funciona nuestro sistema solar y el lugar que ocupa la Tierra dentro de él.',
+    sabia: 'La luz del Sol tarda aproximadamente ocho minutos en llegar a la Tierra.',
+    reflexion: 'Al contemplar la inmensidad del universo, entendemos que nuestro planeta es solo una pequeña parte de algo mucho más grande y extraordinario.'
+  },
+  {
+    id: 's1-2', num: '2',
+    title: 'La Tierra por Dentro',
+    folder: B1 + 'B1_S02_La_Tierra_Por_Dentro/',
+    images: ['01_Estructura_interna_Tierra_infografico.jpg','02_Globo_terraqueo_sala_Antillas.jpg'],
+    text: 'Nuestro planeta parece sólido desde la superficie, pero en realidad está formado por varias capas con características diferentes. La exposición muestra la corteza terrestre, el manto, el núcleo externo y el núcleo interno mediante diagramas y modelos que facilitan su comprensión.\n\nLa corteza es la capa donde vivimos y donde se encuentran continentes y océanos. Debajo de ella está el manto, compuesto por materiales muy calientes. Más profundo se encuentra el núcleo, cuya temperatura puede alcanzar miles de grados Celsius. Gracias a esta exhibición, los visitantes pueden comprender mejor fenómenos naturales como los terremotos, los volcanes y el movimiento de las placas tectónicas.',
+    sabia: null,
+    reflexion: 'Aunque no podemos ver el interior de la Tierra, conocerlo nos ayuda a entender muchos de los procesos que moldean nuestro planeta.'
+  },
+  {
+    id: 's1-3', num: '3',
+    title: 'Piedras que Cuentan Historia',
+    folder: B1 + 'B1_S03_Piedras_que_Cuentan_Historia/',
+    images: ['01_Azurita_Malaquita_Caolinita.jpg','02_Amatista_Brasil.jpg','03_Cobre_nativo_Azufre_Plata.jpg','04_Vitrina_completa_minerales_grupos.jpg','05_Raya_y_color_minerales.jpg','06_Propiedades_minerales_panel.jpg','07_Propiedades_minerales_panel_2.jpg','08_Minerales_vitrina_detalle.jpg','09_Minerales_vitrina_detalle_2.jpg'],
+    text: 'La colección mineralógica del museo reúne ejemplares provenientes de distintas regiones del mundo. Entre ellos destacan la amatista, la azurita, la malaquita, el cobre nativo y otros minerales que llaman la atención por sus formas y colores.\n\nCada mineral posee propiedades únicas relacionadas con su composición química y el ambiente en el que se formó. Algunos se originan en el interior de volcanes, mientras que otros aparecen después de largos procesos geológicos que pueden durar millones de años. Además de su belleza, los minerales tienen una gran importancia científica e industrial. Muchos son utilizados en la fabricación de aparatos electrónicos, joyas y materiales de construcción.',
+    sabia: 'La amatista, una de las piedras más conocidas, pertenece a la familia del cuarzo.',
+    reflexion: 'Los minerales son testigos silenciosos de la historia de la Tierra y nos ayudan a descubrir cómo ha evolucionado nuestro planeta a lo largo del tiempo.'
+  },
+  {
+    id: 's1-4', num: '4',
+    title: 'Rocas Ígneas, Sedimentarias y Metamórficas',
+    folder: B1 + 'B1_S04_Rocas_Igneas_Sedimentarias_Metamorficas/',
+    images: ['01_Rocas_Igneas_panel.jpg','02_Rocas_Igneas_grano_grueso_fino.jpg','03_Rocas_Metamorficas_panel.jpg','04_Rocas_Sedimentarias_panel.jpg','05_Rocas_vitrina_detalle.jpg','06_Rocas_vitrina_detalle_2.jpg'],
+    text: 'Las rocas son el registro escrito de la historia geológica de la Tierra. Esta sala presenta los tres grandes grupos: las rocas ígneas, formadas por el enfriamiento del magma; las sedimentarias, resultado de la acumulación y compactación de sedimentos; y las metamórficas, que se originan cuando otras rocas son transformadas por calor y presión extremos.\n\nLas vitrinas muestran ejemplares reales de cada tipo, con paneles explicativos sobre sus características y los procesos geológicos que las originaron.',
+    sabia: null,
+    reflexion: 'Cada roca que observamos es el resultado de procesos geológicos que ocurrieron a lo largo de millones de años.'
+  },
+  {
+    id: 's1-5', num: '5',
+    title: 'El Esqueleto que Habita el Cielo',
+    folder: B1 + 'B1_S05_Esqueleto_Ballena_y_Cachalote/',
+    images: ['01_Esqueleto_ballena_jorobada_atrio.jpg','02_Maxilar_cachalote_fiseter.jpg','03_Craneo_ballena_frente.jpg','04_Ballena_detalle_costillas.jpg','05_Maxilar_inferior_cachalote_juvenil.jpg','06_Ballena_lateral_detalle.jpg','07_Ballena_detalle_3.jpg'],
+    text: 'Al entrar al atrio principal del museo, es imposible no levantar la vista y admirar el enorme esqueleto de una ballena jorobada suspendido sobre los visitantes. Esta impresionante pieza permite apreciar las dimensiones reales de uno de los mamíferos más grandes del planeta.\n\nLas ballenas jorobadas visitan cada año las aguas de la República Dominicana para reproducirse y dar a luz a sus crías. Por esta razón, forman parte importante del patrimonio natural del país. Junto al esqueleto también se exhibe un maxilar de cachalote, otro gigante de los océanos.',
+    sabia: 'Una ballena jorobada adulta puede medir hasta 16 metros de longitud.',
+    reflexion: 'La majestuosidad de estos animales nos recuerda la importancia de proteger los ecosistemas marinos.'
+  },
+  {
+    id: 's1-6', num: '6',
+    title: 'Tamaury: El Manatí que Nos Enseñó',
+    folder: B1 + 'B1_S06_Tamaury_El_Manati/',
+    images: ['01_Tamaury_manati_esqueleto_mural.jpg','02_Delfines_pantalla_informativa.jpg','03_Mamiferos_marinos_pantalla.jpg','04_Mamiferos_marinos_pantalla_2.jpg','05_Mamiferos_marinos_pantalla_3.jpg'],
+    text: 'Tamaury fue un manatí antillano cuya historia se convirtió en una herramienta educativa para miles de visitantes. Su esqueleto se exhibe junto a imágenes y explicaciones sobre la vida de estos mamíferos acuáticos.\n\nLos manatíes viven en aguas costeras, ríos y lagunas. Son animales tranquilos que se alimentan principalmente de plantas acuáticas. Sin embargo, enfrentan amenazas como la contaminación, las embarcaciones y la pérdida de hábitat. La exposición busca crear conciencia sobre la necesidad de proteger esta especie, considerada vulnerable en muchas regiones.',
+    sabia: null,
+    reflexion: 'Conocer la historia de Tamaury nos ayuda a comprender que cada ser vivo merece respeto y protección.'
+  },
+  {
+    id: 's1-7', num: '7',
+    title: 'Duffy: El Rey que Rugió Hace 67 Millones de Años',
+    folder: B1 + 'B1_S07_Duffy_TRex/',
+    images: ['01_Duffy_TRex_craneo_vitrina.jpg','02_Duffy_TRex_angulo_2.jpg','03_Sala_dinosaurios_panorama.jpg','04_Dinosaurios_sala_detalle.jpg','05_Dinosaurios_sala_detalle_2.jpg','06_Dinosaurios_sala_detalle_3.jpg','07_Dinosaurios_sala_detalle_4.jpg'],
+    text: 'Entre las piezas más sorprendentes del museo se encuentra el cráneo de un Tyrannosaurus rex conocido como "Duffy". Este fósil perteneció a un ejemplar subadulto que vivió durante el período Cretácico.\n\nEl T. rex fue uno de los depredadores más poderosos de la historia. Poseía una mordida extremadamente fuerte, dientes afilados y una gran capacidad para dominar su entorno. La exhibición permite a los visitantes acercarse al mundo de los dinosaurios y comprender cómo los fósiles ayudan a reconstruir la historia de la vida en la Tierra.',
+    sabia: 'Los dientes del T. rex podían alcanzar más de 20 centímetros de longitud.',
+    reflexion: 'Los fósiles son una ventana al pasado y nos muestran cómo ha cambiado la vida a lo largo de millones de años.'
+  },
+  {
+    id: 's1-8', num: '8',
+    title: 'Colecciones: Un Tesoro Incalculable',
+    folder: B1 + 'B1_S08_Colecciones_Tesoro_Incalculable/',
+    images: ['01_Un_tesoro_incalculable_panel.jpg','02_Coleccion_peces_reptiles_anfibios_panel.jpg','03_Coleccion_insectos_detalle.jpg','04_Coleccion_vitrina_detalle.jpg'],
+    text: 'El museo alberga miles de ejemplares de peces, reptiles, anfibios, insectos y otros organismos que forman parte de sus colecciones científicas. Estas colecciones son fundamentales para la investigación y la conservación de la biodiversidad.\n\nLos científicos utilizan estos ejemplares para estudiar especies, comparar características y conocer mejor los ecosistemas. Además, sirven como registro permanente de la riqueza natural del país. Sin este trabajo de preservación, gran parte del conocimiento sobre la biodiversidad podría perderse con el paso del tiempo.',
+    sabia: null,
+    reflexion: 'Conservar especímenes es también conservar información valiosa para las futuras generaciones.'
+  },
+  {
+    id: 's1-9', num: '9',
+    title: 'Aves y Dioramas de Ecosistemas',
+    folder: B1 + 'B1_S09_Aves_y_Dioramas_Ecosistemas/',
+    images: ['01_Diorama_cuervo_bosque_pinos.jpg','02_Diorama_Bosque_Humedo.jpg','03_Aves_exoticas_invasoras_vitrina.jpg','04_Aves_coleccion_vitrina_2.jpg','05_Aves_coleccion_vitrina_3.jpg','06_Ecosistema_diorama_detalle.jpg','07_Ecosistema_diorama_detalle_2.jpg','08_Ecosistema_diorama_detalle_3.jpg','09_Ecosistema_diorama_detalle_4.jpg'],
+    text: 'Los dioramas son recreaciones detalladas de ecosistemas naturales. Uno de ellos muestra un cuervo en un bosque de pinos, rodeado por elementos que reproducen fielmente su hábitat. Estas representaciones permiten observar cómo viven los animales en la naturaleza sin alterar su entorno.\n\nSon una herramienta educativa muy útil para comprender las relaciones entre las especies y el ambiente. Gracias a los dioramas, los visitantes pueden realizar un viaje visual por distintos ecosistemas dominicanos.',
+    sabia: null,
+    reflexion: 'Conocer los hábitats naturales nos ayuda a valorar la importancia de conservarlos.'
+  },
+  {
+    id: 's1-10', num: '10',
+    title: 'Las Mariposas de la Hispaniola',
+    folder: B1 + 'B1_S10_Mariposas_Hispaniola/',
+    images: ['01_Mariposas_Dalman_Hypanartia_panel.jpg','02_Mariposas_coleccion_vitrina.jpg','03_Mariposas_coleccion_vitrina_2.jpg','04_Mariposas_detalle_4.jpg','05_Mariposas_detalle_5.jpg'],
+    text: 'La sala de mariposas combina belleza, ciencia e historia. En ella se observan numerosas especies de la Hispaniola, cada una con colores, formas y patrones únicos. Además de su valor biológico, las mariposas tienen un profundo significado histórico en la República Dominicana.\n\nDurante la dictadura de Trujillo, algunas mujeres utilizaban el nombre "Mariposa" como símbolo de resistencia y comunicación. Esta conexión entre naturaleza e historia convierte la exposición en una de las más especiales del museo.',
+    sabia: null,
+    reflexion: 'A veces un pequeño insecto puede representar grandes ideas de libertad y esperanza.'
+  },
+  {
+    id: 's1-11', num: '11',
+    title: 'La Capa que Nos Protege',
+    folder: B1 + 'B1_S11_Capa_de_Ozono/',
+    images: ['01_Capa_ozono_infografico_completo.jpg'],
+    text: 'La capa de ozono es una franja de gas ubicada en la estratosfera que actúa como un escudo natural para la Tierra. Su función principal es absorber gran parte de la radiación ultravioleta proveniente del Sol, protegiendo así a los seres vivos.\n\nLa exposición explica cómo el deterioro de esta capa puede provocar problemas ambientales y de salud, como el aumento de casos de cáncer de piel y daños a los ecosistemas. También muestra los esfuerzos internacionales realizados para reducir las sustancias que la dañan.',
+    sabia: 'Sin la capa de ozono, la vida en la Tierra sería mucho más difícil debido a la intensa radiación solar.',
+    reflexion: 'Cuidar el planeta significa proteger los sistemas naturales que hacen posible nuestra existencia.'
+  },
+  {
+    id: 's1-12', num: '12',
+    title: 'Cuando el Planeta Cambia de Temperatura',
+    folder: B1 + 'B1_S12_Cambio_Climatico/',
+    images: ['01_Cambio_climatico_panel_Greta.jpg'],
+    text: 'La sala de Cambio Climático muestra cómo las actividades humanas han contribuido al aumento de la temperatura global. A través de imágenes, gráficos y datos científicos, se explican fenómenos como las sequías, los incendios forestales y el derretimiento de los glaciares.\n\nEl Caribe también enfrenta consecuencias importantes, como huracanes más intensos, aumento del nivel del mar y cambios en los ecosistemas marinos. La exposición invita a reflexionar sobre nuestras acciones diarias y cómo cada persona puede contribuir a reducir el impacto ambiental.',
+    sabia: null,
+    reflexion: 'El cambio climático es un desafío global que requiere la participación de todos.'
+  },
+  {
+    id: 's1-13', num: '13',
+    title: 'Cómo el Agua y el Viento Esculpen el Mundo',
+    folder: B1 + 'B1_S13_Erosion_y_Paisaje/',
+    images: ['01_Erosion_paisaje_infografico.jpg','02_Poblacion_humana_mapa_interactivo.jpg'],
+    text: 'Los paisajes que observamos hoy son el resultado de millones de años de cambios naturales. El agua, el viento y otros agentes de erosión modifican constantemente la superficie terrestre.\n\nLa exposición explica procesos como la meteorización, la erosión y la deposición, responsables de la formación de montañas, valles, cuevas, playas y cañones. También se destaca el impacto de las actividades humanas, como la deforestación y la minería, que pueden acelerar estos procesos.',
+    sabia: null,
+    reflexion: 'La Tierra está en constante transformación y nosotros formamos parte de ese cambio.'
+  },
+  {
+    id: 's1-14', num: '14',
+    title: 'Pedro Mir y la Naturaleza: Un Poeta en el Museo',
+    folder: B1 + 'B1_S14_Pedro_Mir_y_la_Naturaleza/',
+    images: ['01_Pedro_Mir_mural_bienvenida.jpg'],
+    text: 'En la entrada del museo se encuentra un mural dedicado a Pedro Mir, uno de los poetas más importantes de la República Dominicana. Su presencia demuestra que la ciencia y el arte pueden complementarse para ayudarnos a comprender el mundo.\n\nLas palabras de Pedro Mir resaltan la belleza de la naturaleza y la importancia de nuestra identidad cultural. Su obra invita a observar el entorno con sensibilidad y admiración. La combinación de literatura y ciencia crea una experiencia educativa más rica y significativa para los visitantes.',
+    sabia: null,
+    reflexion: 'El conocimiento no solo se encuentra en los libros científicos; también vive en el arte y la poesía.'
+  },
+  {
+    id: 's1-15', num: '15',
+    title: 'Origen de las Antillas: 35 Millones de Años de Historia',
+    folder: B1 + 'B1_S15_Origen_de_las_Antillas/',
+    images: ['01_Origen_Antillas_GAARlandia_mapa.jpg','02_Origen_Antillas_detalle.jpg','03_Origen_Antillas_detalle_2.jpg','04_Sala_geologia_panorama.jpg','05_Sala_geologia_detalle.jpg','06_Sala_geologia_detalle_2.jpg','07_Placas_tectonicas_mapa.jpg','08_Geologia_detalle.jpg','09_Geologia_detalle_2.jpg','10_Amber_insectos_vitrina.jpg','11_Amber_detalle.jpg','12_Amber_detalle_2.jpg','13_Sala_final_panorama.jpg','14_Sala_final_detalle.jpg','15_Galeria_natural_panorama.jpg','16_Galeria_natural_detalle.jpg','17_Galeria_natural_detalle_2.jpg','18_Galeria_natural_detalle_3.jpg','19_Sala_colecciones_panorama.jpg','20_Sala_colecciones_detalle.jpg','21_Sala_colecciones_detalle_2.jpg','22_Sala_interior_panorama.jpg','23_Sala_interior_detalle.jpg','24_Sala_interior_detalle_2.jpg','25_Sala_marina_panorama.jpg','26_Sala_marina_detalle.jpg','27_Sala_marina_detalle_2.jpg','28_Sala_panorama_final.jpg','29_Sala_panorama_final_2.jpg'],
+    text: 'La historia de las Antillas comenzó hace millones de años debido a complejos procesos geológicos. Los mapas y modelos del museo muestran cómo se formaron las islas del Caribe y cómo evolucionaron hasta adquirir su aspecto actual.\n\nEstos cambios permitieron el desarrollo de ecosistemas únicos y de numerosas especies endémicas. La formación de La Hispaniola es una parte fundamental de esta historia geológica. Comprender el origen de las Antillas ayuda a explicar la biodiversidad y las características naturales que distinguen a nuestra región.',
+    sabia: null,
+    reflexion: 'Nuestro territorio es el resultado de una historia natural extraordinaria que comenzó mucho antes de la aparición de los seres humanos.'
+  }
+];
+
+const m2Sections = [
+  {
+    id: 's2-1', num: '1',
+    title: 'El Museo Que Nació por Decreto',
+    folder: B2 + 'B2_S01_El_Museo_Que_Nacio_por_Decreto/',
+    images: ['01_Presidente_Guzman_panel_fundacional.jpg'],
+    text: 'El Museo Nacional de Historia y Geografía fue creado con el propósito de conservar y difundir la memoria histórica dominicana. Desde su fundación, se ha dedicado a recopilar objetos, documentos y testimonios que permiten comprender la evolución de la nación.\n\nSus salas muestran diferentes etapas de la historia nacional, desde la época colonial hasta los acontecimientos más recientes.',
+    sabia: null,
+    reflexion: 'Conservar la historia es una forma de preservar la identidad de un pueblo.'
+  },
+  {
+    id: 's2-2', num: '2',
+    title: 'Las Armas de los Padres de la Patria',
+    folder: B2 + 'B2_S02_Armas_de_los_Padres_de_la_Patria/',
+    images: ['01_Pistola_Juan_Pablo_Duarte.jpg','02_Pistola_Francisco_del_Rosario_Sanchez.jpg','03_Arsenal_independencia_panel.jpg','04_Espadas_guerras_independencia.jpg'],
+    text: 'Entre las piezas más valiosas del museo se encuentran objetos que pertenecieron a los fundadores de la República Dominicana. Estas reliquias permiten acercarnos a figuras históricas que desempeñaron un papel fundamental en la independencia nacional.\n\nLas armas exhibidas representan mucho más que instrumentos de combate; son símbolos de sacrificio, valentía y compromiso con la libertad.',
+    sabia: null,
+    reflexion: 'Los objetos históricos nos conectan directamente con quienes construyeron nuestra nación.'
+  },
+  {
+    id: 's2-3', num: '3',
+    title: 'La Bandera Que Sobrevivió',
+    folder: B2 + 'B2_S03_La_Bandera_Que_Sobrevivio/',
+    images: ['01_Bandera_dominicana_historica.jpg'],
+    text: 'La bandera dominicana es uno de los símbolos más importantes de nuestra identidad nacional. En el museo se conserva una bandera histórica que, a pesar del paso del tiempo, sigue representando los ideales de libertad y soberanía del pueblo dominicano.\n\nLos colores pueden verse desgastados, pero su valor histórico permanece intacto. Esta pieza permite imaginar los acontecimientos que presenció y las personas que lucharon bajo ella.',
+    sabia: null,
+    reflexion: 'La bandera no es solo una tela; es un símbolo de la historia, la cultura y los valores de nuestro país.'
+  },
+  {
+    id: 's2-4', num: '4',
+    title: 'Espadas, Fusiles y Batallas: Arsenal de la Independencia',
+    folder: B2 + 'B2_S04_Arsenal_de_la_Independencia/',
+    images: ['01_Fusiles_Remington_y_pistolas_muro.jpg','02_Armas_coleccion_vitrina.jpg','03_Armas_coleccion_vitrina_2.jpg','04_Armas_detalle_4.jpg','05_Armas_detalle_5.jpg','06_Armas_detalle_6.jpg','07_Armas_detalle_7.jpg','08_Fusil_Juan_Maria_Lora_1965.jpg','09_Armas_1965_detalle.jpg','10_Armas_1965_detalle_2.jpg','11_Armas_1965_detalle_3.jpg','12_Armas_1965_detalle_4.jpg'],
+    text: 'Las vitrinas del museo exhiben armas utilizadas en distintos períodos de la historia dominicana. Fusiles, pistolas, espadas y bayonetas muestran cómo se libraron algunas de las luchas más importantes del país.\n\nCada arma cuenta una historia relacionada con la independencia, la Restauración y otros momentos decisivos para la nación. Más allá de su función militar, estas piezas son testimonios materiales del pasado. Observarlas permite comprender mejor los sacrificios realizados por quienes defendieron la libertad dominicana.',
+    sabia: null,
+    reflexion: 'La paz y la independencia que disfrutamos hoy fueron el resultado de grandes esfuerzos y sacrificios.'
+  },
+  {
+    id: 's2-5', num: '5',
+    title: 'Lilís: El Hombre y Su Escritorio',
+    folder: B2 + 'B2_S05_Lilis_el_Hombre_y_Su_Escritorio/',
+    images: ['01_Ulises_Heureaux_retrato_escritorio_1897.jpg'],
+    text: 'Ulises Heureaux, conocido como Lilís, fue una de las figuras más influyentes del siglo XIX dominicano. Durante su gobierno ejerció un fuerte control político y dejó una huella importante en la historia nacional.\n\nLa exposición muestra objetos relacionados con su vida, como documentos, muebles y elementos militares. Estas piezas ayudan a comprender cómo era el ejercicio del poder durante aquella época. El estudio de personajes históricos como Lilís permite analizar tanto sus logros como las controversias de su gobierno.',
+    sabia: null,
+    reflexion: 'Conocer la historia implica comprender sus luces y sus sombras.'
+  },
+  {
+    id: 's2-6', num: '6',
+    title: 'Las Mariposas: Tres Mujeres que Desafiaron al Tirano',
+    folder: B2 + 'B2_S06_Las_Mariposas_Hermanas_Mirabal/',
+    images: ['01_Hermanas_Mirabal_retrato_clasico.jpg','02_Zapatos_cartera_Minerva_trebol_muro.jpg','03_Sala_Mirabal_panorama.jpg','04_Sala_Mirabal_detalle.jpg','05_Sala_Mirabal_detalle_2.jpg'],
+    text: 'Patria, Minerva y María Teresa Mirabal son símbolos de valentía y resistencia en la República Dominicana. Su lucha contra la dictadura de Trujillo las convirtió en un ejemplo de compromiso con la libertad y la justicia.\n\nEn el museo se exhiben objetos personales relacionados con las hermanas Mirabal, incluyendo pertenencias que ayudan a acercarnos a su historia humana y familiar. Su legado trascendió las fronteras nacionales y hoy son reconocidas internacionalmente como símbolos de la lucha por los derechos humanos.',
+    sabia: null,
+    reflexion: 'El coraje de las hermanas Mirabal demuestra que una persona puede marcar la diferencia frente a la injusticia.'
+  },
+  {
+    id: 's2-7', num: '7',
+    title: 'Víctimas y Perseguidos: Los Rostros que No Debemos Olvidar',
+    folder: B2 + 'B2_S07_Victimas_y_Perseguidos_Trujillato/',
+    images: ['01_Mural_victimas_perseguidos_completo.jpg','02_Trujillo_Una_Era_de_Terror_panel.jpg','03_Sala_Trujillo_detalle.jpg','04_Sala_Trujillo_detalle_2.jpg','05_Sala_Trujillo_detalle_3.jpg','06_Sala_Trujillo_detalle_4.jpg'],
+    text: 'El museo dedica un espacio a las víctimas y perseguidos durante la dictadura trujillista. Fotografías y documentos recuerdan a quienes sufrieron persecución por defender sus ideas y derechos.\n\nEste mural de memoria histórica busca rendir homenaje a las personas que enfrentaron la represión y pagaron un alto precio por sus convicciones. Recordar estos acontecimientos es esencial para fortalecer los valores democráticos y evitar que hechos similares vuelvan a repetirse.',
+    sabia: null,
+    reflexion: 'La memoria histórica nos ayuda a construir un futuro más justo y consciente.'
+  },
+  {
+    id: 's2-8', num: '8',
+    title: '1965: El Año en Que Santo Domingo Ardió',
+    folder: B2 + 'B2_S08_Revolucion_de_Abril_1965/',
+    images: ['01_Diorama_Caamano_libreria_Fiume.jpg','02_Sala_1965_detalle.jpg','03_Sala_1965_detalle_2.jpg','04_Sala_1965_detalle_3.jpg','05_Sala_1965_panorama.jpg','06_Sala_1965_panorama_2.jpg'],
+    text: 'La Revolución de Abril de 1965 fue uno de los acontecimientos más importantes de la historia dominicana contemporánea. El museo recrea algunos de estos hechos mediante dioramas, documentos y fotografías.\n\nLa exposición muestra la lucha de quienes defendían el retorno al orden constitucional y ayuda a comprender el contexto político y social de la época. Gracias a estas representaciones, los visitantes pueden acercarse a un momento decisivo para la democracia dominicana.',
+    sabia: null,
+    reflexion: 'Comprender el pasado nos permite valorar la importancia de la participación ciudadana y la democracia.'
+  },
+  {
+    id: 's2-9', num: '9',
+    title: 'Medallas, Insignias y el Honor de Servir',
+    folder: B2 + 'B2_S09_Medallas_e_Insignias_Militares/',
+    images: ['01_Condecoraciones_medallas_insignias_Armada.jpg','02_Sala_militar_detalle.jpg','03_Sala_militar_detalle_2.jpg','04_Sala_militar_detalle_3.jpg','05_Sala_militar_detalle_4.jpg','06_Sala_militar_detalle_5.jpg'],
+    text: 'Las condecoraciones militares representan actos de servicio, disciplina y dedicación. El museo conserva medallas e insignias que muestran la evolución de las instituciones militares dominicanas.\n\nCada pieza tiene un significado especial y refleja momentos importantes de la historia nacional. Además, ayudan a comprender la organización y estructura de las fuerzas armadas. Estas colecciones forman parte del patrimonio histórico del país.',
+    sabia: null,
+    reflexion: 'Los símbolos de reconocimiento representan el esfuerzo y compromiso de quienes sirvieron a la nación.'
+  },
+  {
+    id: 's2-10', num: '10',
+    title: 'Monedas de la Memoria: La CPEP y Sus Medallones',
+    folder: B2 + 'B2_S10_Medallones_CPEP_Efemerides/',
+    images: ['01_CPEP_medallones_conmemorativos.jpg','02_Retrato_Francisco_Gregorio_Billini.jpg','03_Galeria_presidentes_detalle.jpg','04_Galeria_presidentes_detalle_2.jpg','05_Galeria_presidentes_detalle_3.jpg'],
+    text: 'Las monedas y medallones conmemorativos son pequeñas piezas que conservan grandes historias. A través de ellas se recuerdan aniversarios, acontecimientos históricos y figuras importantes de la nación.\n\nLa exposición muestra cómo estos objetos funcionan como documentos históricos que transmiten información de generación en generación. Aunque son pequeños, contienen un enorme valor cultural y educativo.',
+    sabia: null,
+    reflexion: 'A veces, los objetos más pequeños son capaces de guardar los recuerdos más grandes.'
+  },
+  {
+    id: 's2-11', num: '11',
+    title: 'La Guerra de la Restauración en la Pared',
+    folder: B2 + 'B2_S11_Guerra_de_la_Restauracion/',
+    images: ['01_Sala_Restauracion_espadas_figuras.jpg','02_Sala_Restauracion_detalle.jpg','03_Sala_Restauracion_detalle_2.jpg','04_Sala_Restauracion_detalle_3.jpg','05_Farol_Memphis_ocupacion_EEUU.jpg','06_Sala_Ocupacion_detalle.jpg','07_Sala_Ocupacion_mapas_Hispaniola.jpg'],
+    text: 'La Guerra de la Restauración (1863–1865) fue el conflicto que permitió recuperar la soberanía dominicana después de la anexión a España. En el museo se conservan armas, retratos y objetos relacionados con los protagonistas de esta lucha.\n\nLa exposición muestra cómo hombres y mujeres defendieron la independencia nacional a pesar de las dificultades. Cada objeto expuesto ayuda a reconstruir los acontecimientos de esta etapa histórica.',
+    sabia: null,
+    reflexion: 'La independencia no solo se conquista, también debe defenderse y preservarse.'
+  },
+  {
+    id: 's2-12', num: '12',
+    title: 'Un Museo Dentro del Museo: Las Salas Temáticas',
+    folder: B2 + 'B2_S12_Salas_Tematicas_Arquitectura/',
+    images: ['01_Sala_panorama_paneles_colecciones.jpg','02_Sala_panorama_2.jpg','03_Sala_geografia_panorama.jpg','04_Sala_geografia_detalle.jpg','05_Salon_interior_panorama.jpg','06_Salon_interior_detalle.jpg'],
+    text: 'El diseño de un museo es tan importante como las piezas que exhibe. Las salas están organizadas de manera que el visitante pueda recorrer distintos períodos históricos de forma clara y ordenada.\n\nLos colores, las vitrinas, los dioramas y los paneles informativos ayudan a crear una experiencia educativa más dinámica. Cada detalle está pensado para facilitar el aprendizaje.',
+    sabia: null,
+    reflexion: 'Un museo no solo conserva objetos; también cuenta historias a través de sus espacios.'
+  },
+  {
+    id: 's2-13', num: '13',
+    title: 'Los Objetos que Cuentan Más que las Palabras',
+    folder: B2 + 'B2_S13_Objetos_que_Hablan/',
+    images: ['01_Vitrina_objetos_historicos.jpg','02_Objetos_historicos_detalle.jpg','03_Objetos_coloniales_detalle.jpg','04_Objetos_coloniales_detalle_2.jpg','05_Objetos_vitrina_panorama.jpg'],
+    text: 'Los libros y documentos son importantes para aprender historia, pero observar un objeto auténtico produce una experiencia diferente. Ver la pistola de un prócer o un objeto personal de las hermanas Mirabal permite sentir una conexión más cercana con el pasado.\n\nEstos elementos constituyen lo que se conoce como patrimonio material. Son testimonios reales que ayudan a comprender mejor los acontecimientos históricos. Por esta razón, los museos desempeñan una función esencial en la preservación de la memoria colectiva.',
+    sabia: null,
+    reflexion: 'Los objetos históricos nos permiten tocar, aunque sea simbólicamente, fragmentos del pasado.'
+  },
+  {
+    id: 's2-14', num: '14',
+    title: 'Trujillo: El Hombre que Convirtió el País en su Apellido',
+    folder: B2 + 'B2_S14_Trujillo_Era_de_Terror/',
+    images: ['01_Victimas_mural_trujillato.jpg','02_Trujillo_Era_Terror_mural.jpg','03_Zapatos_Minerva_simbolo_represion.jpg'],
+    text: 'La Era de Trujillo fue uno de los períodos más influyentes y controvertidos de la historia dominicana. Rafael Leónidas Trujillo gobernó el país entre 1930 y 1961 mediante un régimen dictatorial.\n\nSu gobierno impulsó obras de infraestructura, pero las libertades políticas eran muy limitadas. La dictadura se caracterizó por la censura, la persecución de opositores y las violaciones de los derechos humanos. La muerte de Trujillo en 1961 marcó el inicio de una nueva etapa orientada hacia la construcción de una sociedad más democrática.',
+    sabia: 'Durante la dictadura, la ciudad de Santo Domingo fue renombrada oficialmente como Ciudad Trujillo.',
+    reflexion: 'Estudiar este período nos ayuda a comprender la importancia de la democracia, la libertad de expresión y el respeto a los derechos humanos para el desarrollo de una sociedad justa.'
+  },
+  {
+    id: 's2-15', num: '15',
+    title: 'Visitar es Recordar: Reflexión Final',
+    folder: B2 + 'B2_S15_Visitar_es_Recordar/',
+    images: ['01_Panel_fundacional_Antonio_Guzman.jpg','02_Sala_final_museo_panorama.jpg'],
+    text: 'La visita al Museo Nacional de Historia y Geografía permite comprender mejor el camino recorrido por la República Dominicana desde sus orígenes hasta la actualidad. Cada sala, objeto y documento contribuye a preservar la memoria de quienes lucharon por la libertad, la justicia y la construcción de la nación.\n\nEl museo se convierte así en un puente entre el pasado y el presente. Visitar este espacio es una oportunidad para aprender, reflexionar y fortalecer nuestra identidad nacional.',
+    sabia: null,
+    reflexion: 'Recordar nuestra historia es una forma de valorar el presente y construir un mejor futuro.'
+  }
+];
+
+const mcSections = [
+  {
+    id: 'sc-1', num: '1',
+    title: 'Dos Tipos de Memoria',
+    folder: null, images: [],
+    text: 'Aunque ambos museos son muy diferentes, comparten una misión importante: preservar la memoria. El Museo Nacional de Historia Natural conserva restos de animales, minerales y evidencias de la evolución de la Tierra, mientras que el Museo Nacional de Historia y Geografía protege objetos relacionados con la historia dominicana.\n\nUno guarda la memoria de la naturaleza y el otro la memoria de las personas. Ambos permiten comprender cómo llegamos a ser lo que somos hoy.',
+    sabia: null,
+    reflexion: 'Conocer tanto la naturaleza como la historia nos ayuda a entender mejor nuestro mundo.'
+  },
+  {
+    id: 'sc-2', num: '2',
+    title: 'La Mariposa: De la Vitrina Científica al Símbolo de Resistencia',
+    folder: null, images: [],
+    text: 'Las mariposas representan uno de los vínculos más interesantes entre ambos museos. En el Museo de Historia Natural son estudiadas como parte de la biodiversidad de la Hispaniola. En el Museo de Historia y Geografía, las "Mariposas" representan la valentía de las hermanas Mirabal y de quienes lucharon contra la dictadura.\n\nAsí, un mismo símbolo adquiere significados distintos: uno relacionado con la ciencia y otro con la libertad.',
+    sabia: null,
+    reflexion: 'Una simple mariposa puede unir la historia natural y la historia humana.'
+  },
+  {
+    id: 'sc-3', num: '3',
+    title: 'Cuánto Tiempo Cabe en una Sala',
+    folder: null, images: [],
+    text: 'Los dos museos trabajan con escalas de tiempo muy diferentes. El Museo de Historia Natural nos habla de millones de años de evolución, formación de montañas y aparición de especies. Por otro lado, el Museo de Historia y Geografía se centra en acontecimientos ocurridos durante los últimos siglos, relacionados con la construcción de la nación dominicana.\n\nAmbas perspectivas son importantes para comprender el pasado desde distintos puntos de vista.',
+    sabia: null,
+    reflexion: 'La historia puede medirse en siglos o en millones de años, pero siempre nos ayuda a comprender el presente.'
+  },
+  {
+    id: 'sc-4', num: '4',
+    title: 'Lo Que Ambos Museos Nos Dicen Sobre la Hispaniola',
+    folder: null, images: [],
+    text: 'La isla de La Hispaniola puede estudiarse desde diferentes perspectivas. El Museo de Historia Natural muestra su origen geológico, su biodiversidad y sus ecosistemas únicos. El Museo de Historia y Geografía presenta los acontecimientos políticos, sociales y culturales que ocurrieron en este territorio.\n\nJuntos ofrecen una visión más completa de la isla, combinando naturaleza e historia.',
+    sabia: null,
+    reflexion: 'Para conocer verdaderamente nuestro país debemos entender tanto su entorno natural como su pasado histórico.'
+  },
+  {
+    id: 'sc-5', num: '5',
+    title: '¿Qué Queda de una Visita?',
+    folder: null, images: [],
+    text: 'Después de recorrer ambos museos, cada visitante se lleva nuevos conocimientos y experiencias. Algunas personas recuerdan la enorme ballena jorobada; otras, los objetos de los héroes nacionales o la historia de las hermanas Mirabal.\n\nLa visita demuestra que aprender puede ser una experiencia emocionante cuando observamos directamente las evidencias del pasado y de la naturaleza. Ambos museos invitan a seguir investigando, haciendo preguntas y valorando el patrimonio nacional.',
+    sabia: null,
+    reflexion: 'Conocer nuestra historia y nuestra naturaleza nos ayuda a sentirnos más conectados con la República Dominicana y a comprender mejor nuestro papel en el mundo.'
+  }
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+
+function makeGallery(section) {
+  if (!section.images || section.images.length === 0) return '';
+  const isSingle = section.images.length === 1;
+  const imgs = section.images.map((img, i) => {
+    const src = section.folder + img;
+    return `<div class="gallery-img" onclick="openLightbox('${section.id}', ${i})">
+      <img src="${src}" alt="${img.replace(/_/g,' ').replace('.jpg','')}" loading="lazy">
+      <div class="img-overlay">⊕</div>
+    </div>`;
+  }).join('');
+  return `<div class="gallery ${isSingle ? 'single' : ''}">${imgs}</div>`;
+}
+
+function makeSection(s, museumClass) {
+  const paras = s.text.split('\n\n').map(p => `<p>${p}</p>`).join('');
+  const sabia = s.sabia ? `<div class="fact-box sabia"><div class="fb-label">¿Sabías que...?</div>${s.sabia}</div>` : '';
+  const reflexion = `<div class="fact-box reflexion">${s.reflexion}</div>`;
+
+  return `
+  <span class="section-anchor" id="${s.id}"></span>
+  <div class="section-block ${museumClass}-section">
+    <div class="section-num">${museumClass === 'mc' ? 'Comparativa' : 'Sala'} ${s.num}</div>
+    <h3>${s.title}</h3>
+    <div class="section-body">
+      <div class="section-text">
+        ${paras}
+        ${sabia}
+        ${reflexion}
+      </div>
+      <div class="section-gallery">
+        ${makeGallery(s)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildNav(sections, listId, itemClass) {
+  const list = document.getElementById(listId);
+  sections.forEach(s => {
+    const item = document.createElement('div');
+    item.className = `nav-item ${itemClass}`;
+    item.dataset.target = s.id;
+    item.innerHTML = `<span class="num">${s.num}</span>${s.title}`;
+    item.onclick = () => scrollToSection(s.id);
+    list.appendChild(item);
+  });
+}
+
+function buildContent(sections, containerId, museumClass) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = sections.map(s => makeSection(s, museumClass)).join('');
+}
+
+buildContent(m1Sections, 'content-m1', 'm1');
+buildContent(m2Sections, 'content-m2', 'm2');
+buildContent(mcSections, 'content-mc', 'mc');
+
+buildNav(m1Sections, 'list-m1', 'm1-item');
+buildNav(m2Sections, 'list-m2', 'm2-item');
+buildNav(mcSections, 'list-mc', 'mc-item');
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const main = document.getElementById('main');
+  const top = el.offsetTop - 10;
+  main.scrollTo({ top, behavior: 'smooth' });
+}
+
+function toggleGroup(toggle) {
+  const list = toggle.nextElementSibling;
+  toggle.classList.toggle('open');
+  list.classList.toggle('open');
+}
+
+// Active nav tracking
+const mainEl = document.getElementById('main');
+const allNavItems = document.querySelectorAll('.nav-item');
+const allAnchors = [];
+
+[...m1Sections, ...m2Sections, ...mcSections].forEach(s => {
+  allAnchors.push(s.id);
+});
+
+function updateActiveNav() {
+  const scrollTop = mainEl.scrollTop;
+  let active = null;
+  for (const id of allAnchors) {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - 120 <= scrollTop) active = id;
+  }
+  allNavItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.target === active) item.classList.add('active');
+  });
+
+  // progress bar
+  const total = mainEl.scrollHeight - mainEl.clientHeight;
+  const pct = total > 0 ? (scrollTop / total) * 100 : 0;
+  document.getElementById('progress').style.width = pct + '%';
+
+  // scroll top button
+  const btn = document.getElementById('scroll-top');
+  scrollTop > 400 ? btn.classList.add('visible') : btn.classList.remove('visible');
+}
+
+mainEl.addEventListener('scroll', updateActiveNav, { passive: true });
+
+// ── LIGHTBOX ──────────────────────────────────────────────────────────────────
+
+let lbImages = [];
+let lbIndex = 0;
+let lbSection = null;
+
+// Build image registry
+const imageRegistry = {};
+[...m1Sections, ...m2Sections].forEach(s => {
+  imageRegistry[s.id] = s.images.map(img => s.folder + img);
+});
+
+function openLightbox(sectionId, idx) {
+  lbSection = sectionId;
+  lbImages = imageRegistry[sectionId] || [];
+  lbIndex = idx;
+  showLbImage();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function showLbImage() {
+  document.getElementById('lb-img').src = lbImages[lbIndex];
+  document.getElementById('lb-counter').textContent = `${lbIndex + 1} / ${lbImages.length}`;
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && e.target !== document.getElementById('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function lbPrev(e) { e.stopPropagation(); lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbImage(); }
+function lbNext(e) { e.stopPropagation(); lbIndex = (lbIndex + 1) % lbImages.length; showLbImage(); }
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('show')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbPrev(e);
+  if (e.key === 'ArrowRight') lbNext(e);
+});
+</script>
+</body>
+</html>
