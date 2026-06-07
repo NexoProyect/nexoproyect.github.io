@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Archivo 2096 - Audioguía</title>
+
+<style>
+
+body{
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    margin:0;
+    padding:20px;
+}
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+h1{
+    margin-bottom:5px;
+}
+
+#buscador{
+    width:100%;
+    max-width:600px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.seccion{
+    margin-top:40px;
+}
+
+.seccion h2{
+    border-left:5px solid #38bdf8;
+    padding-left:12px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+.card h3{
+    margin-top:0;
+    color:#38bdf8;
+}
+
+audio{
+    width:100%;
+}
+
+.qr{
+    display:block;
+    margin:15px auto;
+    width:180px;
+}
+
+details{
+    margin-top:10px;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.printBtn{
+    margin-top:15px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+
+<h1>Archivo 2096</h1>
+<p>Audioguía Interactiva</p>
+
+<input
+id="buscador"
+placeholder="Buscar audio...">
+
+<br><br>
+
+<button onclick="window.print()">
+🖨 Imprimir QR
+</button>
+
+</header>
+
+<div id="contenido"></div>
+
+<script>
+
+const repoBase =
+"https://raw.githubusercontent.com/NexoProyect/nexoproyect.github.io/main";
+
+const data = [
+
+{
+nombre:"Museo Nacional de Historia Natural",
+carpeta:"seccion_1",
+audios:[
+"El Universo en una Sala",
+"La Tierra por Dentro",
+"Piedras que Cuentan Historia",
+"El Esqueleto que Habita el Cielo",
+"Tamaury: El Manatí que Nos Enseñó",
+"Duffy: El Rey que Rugió Hace 67 Millones de Años",
+"Colecciones: Un Tesoro Incalculable",
+"Escamas, Piel y Branquias",
+"Las Mariposas que Susurraban Secretos",
+"El Cuervo del Bosque de Pinos",
+"La Capa que Nos Protege",
+"Cuando el Planeta Cambia de Temperatura",
+"Cómo el Agua y el Viento Esculpen el Mundo",
+"Pedro Mir y la Naturaleza",
+"Origen de las Antillas"
+]
+},
+
+{
+nombre:"Museo Nacional de Historia y Geografía",
+carpeta:"seccion_2",
+audios:[
+"El Museo que Nació por Decreto",
+"Las Armas de los Padres de la Patria",
+"La Bandera que Sobrevivió",
+"Espadas, Fusiles y Batallas",
+"Lilís: El Hombre y Su Escritorio",
+"Las Mariposas: Tres Mujeres que Desafiaron al Tirano",
+"Víctimas y Perseguidos",
+"1965: El Año en que Santo Domingo Ardió",
+"Medallas, Insignias y el Honor de Servir",
+"Monedas de la Memoria",
+"La Guerra de la Restauración en la Pared",
+"Un Museo Dentro del Museo",
+"Los Objetos que Cuentan Más que las Palabras",
+"Trujillo: El Hombre que Convirtió el País en su Apellido",
+"Visitar es Recordar"
+]
+},
+
+{
+nombre:"Comparativas e Interactivas",
+carpeta:"seccion_3",
+audios:[
+"Dos Tipos de Memoria",
+"La Mariposa: de la Vitrina Científica al Símbolo de Resistencia",
+"Cuánto Tiempo Cabe en una Sala",
+"Lo que Ambos Museos Nos Dicen Sobre La Hispaniola",
+"¿Qué Queda de una Visita?"
+]
+}
+
+];
+
+const contenedor =
+document.getElementById("contenido");
+
+data.forEach((sec,sIndex)=>{
+
+const section =
+document.createElement("div");
+
+section.className="seccion";
+
+section.innerHTML=`
+<h2>${sec.nombre}</h2>
+<div class="grid"></div>
+`;
+
+const grid =
+section.querySelector(".grid");
+
+sec.audios.forEach((titulo,index)=>{
+
+const numero =
+String(index+1).padStart(2,'0');
+
+const folder =
+index+1 < 10
+? `0${index+1}`
+: `0${index+1}`;
+
+const anchor =
+`audio-s${sIndex+1}-${numero}`;
+
+const audioURL =
+`${repoBase}/${sec.carpeta}/${folder}/narration.mp3`;
+
+const qrURL =
+`${location.origin}${location.pathname}#${anchor}`;
+
+const card =
+document.createElement("div");
+
+card.className="card";
+card.id=anchor;
+
+card.innerHTML=`
+
+<h3>${numero}. ${titulo}</h3>
+
+<img
+class="qr"
+src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrURL)}">
+
+<audio controls preload="none">
+<source src="${audioURL}" type="audio/mpeg">
+</audio>
+
+<details>
+<summary>Mostrar enlace QR</summary>
+<p>${qrURL}</p>
+</details>
+
+`;
+
+grid.appendChild(card);
+
+});
+
+contenedor.appendChild(section);
+
+});
+
+document
+.getElementById("buscador")
+.addEventListener("input", e=>{
+
+const texto =
+e.target.value.toLowerCase();
+
+document
+.querySelectorAll(".card")
+.forEach(card=>{
+
+card.style.display =
+card.textContent
+.toLowerCase()
+.includes(texto)
+? "block"
+: "none";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
