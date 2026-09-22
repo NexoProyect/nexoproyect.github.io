@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Galaxia de Flores Amarillas Alex Dev</title>
+
+    <!--
+
+Contáctame:
+
+   * Crea tus diseños sin código
+ https://comparte-amor.vercel.app/
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
+ 
+    * Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+ 
+   * WhatsApp: +52 5587450945
+https://wa.me/525568916053
+
+
+-->
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    *{
+        cursor: url('flor.png'), auto !important;
+
+    }
+
+    #container {
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #111100 0%, #000000 100%);
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    #modalCarta {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #modalCarta.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    #cartaImg {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 204, 0, 0.6);
+      object-fit: contain;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #cerrarModal {
+      margin-top: 20px;
+      padding: 10px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      background-color: #ffcc00;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    #cerrarModal:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #musicToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 50;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 204, 0, 0.15);
+      color: #ffcc00;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    #musicToggle:hover {
+      background: rgba(255, 204, 0, 0.3);
+      transform: scale(1.08);
+    }
+
+    #startOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: opacity 0.6s ease;
+    }
+
+    #startOverlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #startTitle {
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 32px;
+      color: #ffe066;
+      text-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+      margin-bottom: 30px;
+      padding: 0 20px;
+    }
+
+    #startBtn {
+      padding: 14px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #332600;
+      background-color: #ffcc00;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 204, 0, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    #startBtn:hover {
+      transform: scale(1.05);
+    }
+
+    #startBtn:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <div id="startOverlay">
+    <div id="startTitle">Una galaxia de flores te espera 🌻</div>
+    <button id="startBtn">Haz clic para comenzar</button>
+  </div>
+
+  <button id="musicToggle" title="Musica">&#9835;</button>
+  <audio id="bgMusic" src="musica.mp3" loop preload="auto"></audio>
+
+  <div id="modalCarta">
+    <img id="cartaImg" src="" alt="Carta">
+    <button id="cerrarModal">Cerrar</button>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000000, 0.0015);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 4, 18); 
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.getElementById('container').appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.autoRotate = false; 
+    controls.enabled = false; 
+
+    const textureLoader = new THREE.TextureLoader();
+
+
+    const flowerExplosionGroup = new THREE.Group();
+    scene.add(flowerExplosionGroup);
+    const explFlowers = [];
+    const fUrls = ["flor1.png", "flor2.png", "flor3.png", "flor4.png", "flor5.png", "flor6.png", "flor7.png"];
+    const cartaCount = 5;
+    
+    fUrls.forEach(url => {
+      for(let k=0; k<28; k++) {
+        const tex = textureLoader.load(url);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
+
+        sprite.position.set(
+          (Math.random() - 0.5) * 150,
+          (Math.random() - 0.5) * 150,
+          - (Math.random() * 400)
+        );
+
+        const s = Math.random() * 2.5 + 1.5;
+        sprite.scale.set(s, s, 1);
+
+        flowerExplosionGroup.add(sprite);
+        explFlowers.push(sprite);
+      }
+    });
+
+    const galaxyGroup = new THREE.Group();
+    scene.add(galaxyGroup);
+    galaxyGroup.visible = false; 
+    galaxyGroup.scale.set(0, 0, 0); 
+
+    function createGlowMaterial(color, size = 128) {
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const context = canvas.getContext('2d');
+      const gradient = context.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, size, size);
+      return new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true, blending: THREE.AdditiveBlending }));
+    }
+
+    const centralGlow = createGlowMaterial('rgba(255, 230, 100, 0.8)', 256);
+    centralGlow.scale.set(8, 8, 1);
+    galaxyGroup.add(centralGlow); 
+
+    for (let i = 0; i < 15; i++) {
+      const hue = 40 + Math.random() * 25;
+      const nebula = createGlowMaterial(`hsla(${hue}, 100%, 50%, 0.3)`, 256);
+      nebula.scale.set(10 + Math.random() * 20, 10 + Math.random() * 20, 1);
+      nebula.position.set((Math.random() - 0.5) * 40, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 40);
+      galaxyGroup.add(nebula); 
+    }
+
+    const galaxyParams = {
+      count: 100000, arms: 4, radius: 10, spin: 2, randomness: 0.3, randomnessPower: 3,
+      insideColor: new THREE.Color(0xffcc00), 
+      outsideColor: new THREE.Color(0xffff66) 
+    };
+
+    const positions = new Float32Array(galaxyParams.count * 3);
+    const colors = new Float32Array(galaxyParams.count * 3);
+
+    for (let i = 0; i < galaxyParams.count; i++) {
+      const i3 = i * 3;
+      const radius = Math.pow(Math.random(), galaxyParams.randomnessPower) * galaxyParams.radius;
+      const branchAngle = ((i % galaxyParams.arms) / galaxyParams.arms) * Math.PI * 2;
+      const totalAngle = branchAngle + (radius * galaxyParams.spin);
+      
+      positions[i3]     = Math.cos(totalAngle) * radius + (Math.random() - 0.5) * galaxyParams.randomness * radius;
+      positions[i3 + 1] = (Math.random() - 0.5) * galaxyParams.randomness * radius * 0.5;
+      positions[i3 + 2] = Math.sin(totalAngle) * radius + (Math.random() - 0.5) * galaxyParams.randomness * radius;
+      
+      const mixedColor = galaxyParams.insideColor.clone();
+      mixedColor.lerp(galaxyParams.outsideColor, radius / galaxyParams.radius);
+      mixedColor.multiplyScalar(0.7 + 0.3 * Math.random());
+      colors[i3] = mixedColor.r; colors[i3 + 1] = mixedColor.g; colors[i3 + 2] = mixedColor.b;
+    }
+
+    const galaxyGeom = new THREE.BufferGeometry();
+    galaxyGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    galaxyGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    const galaxyMat = new THREE.PointsMaterial({ size: 0.02, vertexColors: true, depthWrite: false, blending: THREE.AdditiveBlending });
+    
+    const galaxy = new THREE.Points(galaxyGeom, galaxyMat);
+    galaxyGroup.add(galaxy);
+
+    const galaxyFlowers = [];
+    fUrls.forEach(url => {
+      const tex = textureLoader.load(url);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      for (let k = 0; k < 22; k++) {
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthWrite: false }));
+        const radius = Math.pow(Math.random(), 2) * galaxyParams.radius * 1.1;
+        const arm = Math.floor(Math.random() * galaxyParams.arms);
+        const branchAngle = (arm / galaxyParams.arms) * Math.PI * 2;
+        const totalAngle = branchAngle + (radius * galaxyParams.spin) + (Math.random() - 0.5) * 0.5;
+
+        sprite.position.set(
+          Math.cos(totalAngle) * radius + (Math.random() - 0.5) * 1.5,
+          (Math.random() - 0.5) * radius * 0.35,
+          Math.sin(totalAngle) * radius + (Math.random() - 0.5) * 1.5
+        );
+
+        const s = Math.random() * 0.5 + 0.7;
+        sprite.scale.set(s, s, 1);
+        sprite.userData.bobOffset = Math.random() * Math.PI * 2;
+        sprite.userData.esClickeable = true;
+        sprite.userData.cartaUrl = `carta${Math.floor(Math.random() * cartaCount) + 1}.png`;
+
+        galaxyGroup.add(sprite);
+        galaxyFlowers.push(sprite);
+      }
+    });
+
+
+    const starGeom = new THREE.BufferGeometry();
+    const starCount = 8000;
+    const starPositions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      starPositions[i * 3] = (Math.random() - 0.5) * 400;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 400;
+      starPositions[i * 3 + 2] = (Math.random() - 0.5) * 400;
+    }
+    starGeom.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5, transparent: true });
+    const stars = new THREE.Points(starGeom, starMat);
+    scene.add(stars);
+
+  
+    const cometGroup = new THREE.Group();
+    scene.add(cometGroup);
+    const comets = [];
+
+    function createCometMesh() {
+      const group = new THREE.Group();
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.15, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0xffffee })
+      );
+      group.add(head);
+      
+      const tailGeo = new THREE.ConeGeometry(0.2, 8, 8);
+      tailGeo.translate(0, -4, 0);
+      const tail = new THREE.Mesh(
+        tailGeo,
+        new THREE.MeshBasicMaterial({ 
+          color: 0xffff88, 
+          transparent: true, opacity: 0.4, 
+          blending: THREE.AdditiveBlending, depthWrite: false 
+        })
+      );
+      group.add(tail);
+      return group;
+    }
+
+    function resetComet(comet) {
+      comet.position.set(
+        (Math.random() - 0.5) * 300,
+        150 + Math.random() * 100, 
+        (Math.random() - 0.5) * 300
+      );
+      comet.userData.velocity = new THREE.Vector3(
+        (Math.random() - 0.5) * 3,
+        - (Math.random() * 2 + 2),
+        (Math.random() - 0.5) * 3
+      ).normalize().multiplyScalar(Math.random() * 3 + 2); 
+      comet.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), comet.userData.velocity.clone().normalize());
+    }
+
+    for(let i = 0; i < 12; i++) { 
+      const c = createCometMesh();
+      resetComet(c);
+      cometGroup.add(c);
+      comets.push(c);
+    }
+
+
+    const heartCount = 15000;
+    const hPos = new Float32Array(heartCount * 3);
+    const hCol = new Float32Array(heartCount * 3);
+    for(let i=0; i < heartCount; i++) {
+      const t = Math.PI * 2 * Math.random();
+      let x = 16 * Math.pow(Math.sin(t), 3);
+      let y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+      let z = (Math.random() - 0.5) * 3;
+      
+      const scale = 0.15, noise = 0.4;
+      hPos[i*3] = x * scale + (Math.random() - 0.5) * noise;
+      hPos[i*3+1] = y * scale + (Math.random() - 0.5) * noise;
+      hPos[i*3+2] = z * scale + (Math.random() - 0.5) * noise;
+
+      const mixedColor = galaxyParams.insideColor.clone();
+      mixedColor.lerp(galaxyParams.outsideColor, Math.random());
+      hCol[i*3] = mixedColor.r; hCol[i*3+1] = mixedColor.g; hCol[i*3+2] = mixedColor.b;
+    }
+    const heartGeom = new THREE.BufferGeometry();
+    heartGeom.setAttribute('position', new THREE.BufferAttribute(hPos, 3));
+    heartGeom.setAttribute('color', new THREE.BufferAttribute(hCol, 3));
+    const heartParticles = new THREE.Points(heartGeom, galaxyMat);
+    heartParticles.position.set(0, 4, 0);
+    heartParticles.scale.set(0, 0, 0); 
+    scene.add(heartParticles);
+
+ 
+    function createElegantText(message) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800; canvas.height = 160;
+      const ctx = canvas.getContext('2d');
+      ctx.font = "italic bold 65px 'Georgia', serif"; 
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "#ffcc00";
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(message, 400, 80);
+      return new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true }));
+    }
+
+    const mainText = createElegantText("Te amo 💛🌻");
+    mainText.position.set(0, 4, 0);
+    mainText.scale.set(0, 0, 0); 
+    scene.add(mainText);
+
+    const orbitGroup = new THREE.Group();
+    scene.add(orbitGroup);
+
+    function createSmallTextSprite(message) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 700; canvas.height = 140;
+      const context = canvas.getContext('2d');
+      context.font = "bold 45px Arial";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillStyle = "#ffffff";
+      context.shadowColor = "#ffaa00";
+      context.shadowBlur = 10;
+      context.fillText(message, canvas.width / 2, canvas.height / 2);
+      return new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), transparent: true }));
+    }
+
+    const romanticTexts = [
+      "Amor de mi vida 💛", "Eres preciosa 🌻", "Me encantas 🌼", "Mi Amor 💛", 
+      "Eres mi todo 🌻", "Te Amo ☀️", "Siempre juntos 💛", "Eres mi sol 🌻", 
+      "Eres única 🌼", "Te adoro 💛", "My Love 🌻", "Amor de mi vida 💛", 
+      "Eres preciosa 🌻", "Me encantas 🌼", "Mi Amor 💛", "Eres mi todo 🌻", 
+      "Te Amo ☀️", "Siempre juntos 💛", "Eres mi sol 🌻", "Eres única 🌼", 
+      "Te adoro 💛", "My Love 🌻"
+    ];
+    
+    const imageUrls = [
+      "4.png", 
+      "5.png",
+      "6.png",
+      "7.png",
+      "8.png",
+    ];
+
+    const totalOrbiters = romanticTexts.length + imageUrls.length;
+
+    for (let i = 0; i < totalOrbiters; i++) {
+      const radius = 6.0 + (i % 3) * 0.8; 
+      const angle = (i / totalOrbiters) * Math.PI * 2;
+      const heights = [-2.5, -0.8, 0.8, 2.5];
+      const yPos = heights[i % 4] + (Math.random() * 0.4 - 0.2);
+
+      let orbiter;
+      
+      if (i % 2 === 0) {
+        const textIndex = Math.floor(i / 2) % romanticTexts.length;
+        orbiter = createSmallTextSprite(romanticTexts[textIndex]);
+        orbiter.scale.set(4.5, 0.9, 1);
+      } else {
+        const imgIndex = Math.floor(i / 2) % imageUrls.length;
+        const tex = textureLoader.load(imageUrls[imgIndex]);
+        tex.colorSpace = THREE.SRGBColorSpace; 
+        
+        orbiter = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
+        orbiter.scale.set(1.5, 1.5, 1);
+        
+        orbiter.userData = {
+          esClickeable: true,
+          cartaUrl: `carta${imgIndex + 1}.png`
+        };
+      }
+
+      orbiter.position.set(Math.cos(angle)*radius, yPos, Math.sin(angle)*radius);
+      orbitGroup.add(orbiter);
+    }
+    orbitGroup.scale.set(0, 0, 0);
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const modalCarta = document.getElementById('modalCarta');
+    const cartaImg = document.getElementById('cartaImg');
+    const cerrarModal = document.getElementById('cerrarModal');
+    let isModalOpen = false;
+
+    window.addEventListener('pointerdown', (event) => {
+      if(isModalOpen) return;
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(orbitGroup.children.concat(galaxyFlowers));
+
+      if (intersects.length > 0) {
+        const objetoTocado = intersects[0].object;
+
+        if (objetoTocado.userData && objetoTocado.userData.esClickeable) {
+          abrirCarta(objetoTocado.userData.cartaUrl);
+        }
+      }
+    });
+
+    function abrirCarta(url) {
+      cartaImg.src = url;
+      modalCarta.classList.add('show');
+      isModalOpen = true;
+      controls.enabled = false;
+      playChime();
+    }
+
+    cerrarModal.addEventListener('click', () => {
+      modalCarta.classList.remove('show');
+      isModalOpen = false;
+      setTimeout(() => { cartaImg.src = ""; }, 300);
+      if (stage === 3) controls.enabled = true;
+    });
+
+    let audioCtx = null;
+    function playChime() {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        [0, 0.12, 0.24].forEach((delay, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = [880, 1108, 1318][idx];
+          gain.gain.setValueAtTime(0, now + delay);
+          gain.gain.linearRampToValueAtTime(0.15, now + delay + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.8);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.85);
+        });
+      } catch (e) {}
+    }
+
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    bgMusic.volume = 0.4;
+    let musicPlaying = false;
+
+    function tryPlayMusic() {
+      bgMusic.play().then(() => {
+        musicPlaying = true;
+        musicToggle.textContent = '♫';
+      }).catch(() => {
+        musicPlaying = false;
+      });
+    }
+
+    musicToggle.addEventListener('click', () => {
+      if (musicPlaying) {
+        bgMusic.pause();
+        musicPlaying = false;
+        musicToggle.textContent = '♫︎';
+        musicToggle.style.opacity = '0.5';
+      } else {
+        tryPlayMusic();
+        musicToggle.style.opacity = '1';
+      }
+    });
+
+    tryPlayMusic();
+
+    ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'scroll'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (!musicPlaying) tryPlayMusic();
+      }, { once: true, passive: true });
+    });
+
+
+   
+    const clock = new THREE.Clock();
+    let stage = 0;
+    let timeProgress = 0;
+    let experienceStarted = false;
+
+    const startOverlay = document.getElementById('startOverlay');
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', () => {
+      experienceStarted = true;
+      startOverlay.classList.add('hide');
+      clock.getDelta();
+      if (!musicPlaying) tryPlayMusic();
+    });
+
+    function easeOutCubic(x) {
+      return 1 - Math.pow(1 - x, 3);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const rawDelta = clock.getDelta();
+      const delta = experienceStarted ? Math.min(rawDelta, 0.1) : 0;
+      const time = clock.getElapsedTime();
+
+      comets.forEach(comet => {
+        comet.position.add(comet.userData.velocity);
+        if (comet.position.y < -200 || Math.abs(comet.position.x) > 300 || Math.abs(comet.position.z) > 300) {
+          resetComet(comet);
+        }
+      });
+
+      if (stage === 0) {
+        timeProgress += delta * 0.3; 
+        
+        const pos = stars.geometry.attributes.position.array;
+        for(let i = 2; i < pos.length; i += 3) {
+          pos[i] += 25; 
+          if(pos[i] > 100) {
+            pos[i] = -200; 
+            pos[i-1] = (Math.random() - 0.5) * 400;
+            pos[i-2] = (Math.random() - 0.5) * 400;
+          }
+        }
+        stars.geometry.attributes.position.needsUpdate = true;
+
+        explFlowers.forEach(sprite => {
+          sprite.position.z += 25; 
+          if (sprite.position.z > 50) { 
+            sprite.position.z = -200 - Math.random() * 100;
+            sprite.position.x = (Math.random() - 0.5) * 150;
+            sprite.position.y = (Math.random() - 0.5) * 150;
+          }
+        });
+
+        if (timeProgress >= 1) {
+          stage = 1;
+          timeProgress = 0;
+          galaxyGroup.visible = true; 
+        }
+      } 
+      else if (stage === 1) {
+        timeProgress += delta * 0.5; 
+        const scale = easeOutCubic(Math.min(timeProgress, 1));
+        
+        galaxyGroup.scale.set(scale, scale, scale);
+
+        const speed = 25 * (1 - scale);
+        
+        const pos = stars.geometry.attributes.position.array;
+        for(let i = 2; i < pos.length; i += 3) {
+          pos[i] += speed > 0.1 ? speed : 0;
+          if(pos[i] > 100) pos[i] = -200;
+        }
+        stars.geometry.attributes.position.needsUpdate = true;
+
+        explFlowers.forEach(sprite => {
+          sprite.position.z += speed > 0.1 ? speed : 0;
+          if (sprite.position.z > 50) {
+            sprite.position.z = -200 - Math.random() * 100;
+            sprite.position.x = (Math.random() - 0.5) * 150;
+            sprite.position.y = (Math.random() - 0.5) * 150;
+          }
+        });
+
+        if (timeProgress >= 1) {
+          stage = 2;
+          timeProgress = 0;
+        }
+      } 
+      else if (stage === 2) {
+        timeProgress += delta * 0.8; 
+        const scale = easeOutCubic(Math.min(timeProgress, 1));
+        
+        heartParticles.scale.set(scale, scale, scale);
+        orbitGroup.scale.set(scale, scale, scale);
+        mainText.scale.set(5 * scale, 1 * scale, 1); 
+
+        explFlowers.forEach(sprite => {
+          sprite.position.applyAxisAngle(new THREE.Vector3(0,1,0), 0.001);
+        });
+
+        if (timeProgress >= 1) {
+          stage = 3;
+          if(!isModalOpen) controls.enabled = true; 
+        }
+      }
+
+      if (!isModalOpen) {
+        if (stage >= 1) galaxyGroup.rotation.y += 0.001;
+        if (stage >= 2) orbitGroup.rotation.y += 0.001;
+
+        if (stage === 3) {
+           stars.rotation.y += 0.0002;
+
+           const pulse = 1 + Math.sin(time * 2.5) * 0.03;
+           heartParticles.scale.set(pulse, pulse, pulse);
+           heartParticles.position.y = 4 + Math.sin(time) * 0.2;
+           mainText.position.y = 4 + Math.sin(time) * 0.2;
+
+           explFlowers.forEach(sprite => {
+             sprite.position.applyAxisAngle(new THREE.Vector3(0,1,0), 0.001);
+           });
+        }
+      }
+
+      galaxyFlowers.forEach(sprite => {
+        sprite.position.y += Math.sin(time * 1.5 + sprite.userData.bobOffset) * 0.0008;
+      });
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+  </script>
+</body>
+
+
+  <!--
+
+Contáctame:
+
+   * Crea tus diseños sin código
+ https://comparte-amor.vercel.app/
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
+ 
+    * Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+ 
+   * WhatsApp: +52 5587450945
+https://wa.me/525568916053
+
+
+-->
+
+</html>
